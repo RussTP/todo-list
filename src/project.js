@@ -1,5 +1,7 @@
 import { format, compareAsc } from "date-fns";
 import { Todo } from "./todo.js";
+import { Display } from "./dom.js";
+
 
 
  class Project {
@@ -7,8 +9,8 @@ import { Todo } from "./todo.js";
     constructor(){
         this.todos = [];
     }
-    addTodo(title, description, priority, complete = false) {
-        const newTodo = new Todo(title, description, priority.value, complete);
+    addTodo(title, description, priority, complete = false, date = null) {
+        const newTodo = new Todo(title, description, priority, complete, date);
         this.todos.push(newTodo);
         return newTodo;
     }
@@ -45,8 +47,6 @@ import { Todo } from "./todo.js";
         }
     return null;
     }
-   
-
 }
 
 export default Project;
