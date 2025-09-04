@@ -1,4 +1,4 @@
-import { format, compareAsc } from "date-fns";
+import {  compareAsc, parseISO } from "date-fns";
 import { Todo } from "./todo.js";
 import { Display } from "./dom.js";
 
@@ -9,11 +9,15 @@ import { Display } from "./dom.js";
     constructor(){
         this.todos = [];
     }
-    addTodo(title, description, priority, complete = false, date = null) {
-        const newTodo = new Todo(title, description, priority, complete, date);
-        this.todos.push(newTodo);
-        return newTodo;
+    addTodo(title, description, priority, dateString) {
+        const todo = new Todo(title, description, priority, false);
+        if (dateString) {
+            const parsed = parseISO(dateString);
+            todo.date.push(parsed);
     }
+    this.todos.push(todo);
+    return todo;
+}
 
     removeTodo(id) {
         const index = this.todos.findIndex(todo => todo.id === id);
@@ -23,27 +27,25 @@ import { Display } from "./dom.js";
         }
         return null;
     }
-    
-    addChecklist(id, newItem) {
+
+    addTask(id, newItem) {
         const index = this.todos.findIndex(todo => todo.id === id);
         if (index !== -1) {
             const todo  = this.todos[index];
-            todo.checklist.push(newItem);
+            todo.task.push(newItem);
             return newItem;
         }
         return null;  
 
     }
-        date(id, newDate) {
+        dueDate(id, newDateString) {
         const index = this.todos.findIndex(todo => todo.id ===id);
         if (index !== -1) {
         const todo = this.todos[index];
-        const parsedDate = new Date(newDate);
-        todo.date.push(newDate);
+        const parsedDate = parseISO(newDateString);
+        todo.date.push(parsedDate);
         todo.date.sort(compareAsc);
-        format(todo.date[0], "MM/dd/yyyy");
         return todo;
-
         }
     return null;
     }

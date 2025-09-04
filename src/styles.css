@@ -23,16 +23,31 @@ body {
 }
 
 button {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     height: 3rem;
-    width: 8rem;
+    padding-left: 1rem;
+    width: 100%;
+    border: none;
+    background-color: rgb(82, 82, 82);
 }
+
+button:hover {
+    background-color:rgba(207, 207, 207, 0.473) ;
+}
+
+h1 {
+    height: 50px;
+    
+}
+
 
 .button-container {
     display: flex;
+    width: 100%;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 
@@ -42,50 +57,88 @@ display: flex;
 margin-top: 10rem;
 width: 20rem;
 align-items: flex-start;
-justify-content: center;
+justify-content: flex-start;
 background-color: rgb(82, 82, 82);
 
 }
 
 #main-content {
-    top:20px;
-    width: 100%;
-
-}
-
-#project-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-wrap:wrap;
+    width: 100%;
+    height: auto;
+    margin-top: 30px;
+    margin-left: 30px;
+    
 
 }
+
+#form-container {
+  position: fixed;
+  top: 10rem;
+  left: 35%;
+  width: 50rem;
+  height: auto;
+  z-index: 1000;   
+}
+
 
 #project-form {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    text-align: center;
-    width: 40rem;
-    height: 30rem;
-    background-color: rgb(121, 72, 12);
+    align-items: center;
+    gap: 1rem;
+    width: 90%;
 
 }
 
 form  {
-    display: flex;
-    flex-direction: column;
+    background-color: rgb(82, 82, 82);
+    padding: 2rem;
 
 }
+
 
 
 
  #title {
-    width: 20rem;
+    flex: 1 1 auto;
+    width: 30rem;
     height: 2rem;
+ 
 
 }
 
 #description {
-    width: 20rem;
+    flex: 1 1 auto;
+    width: 30rem;
     height: 10rem;
+    
 }
+
+
+
+#project-container, h1 {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 20px;
+    height: 5rem;
+    gap: 1rem;
+
+}
+
+.project-card  {
+    align-items: flex-start;
+    flex: 1 2 50rem;
+    min-width: 12rem;
+    height: auto;
+    gap: 2em;
+    padding: 0.7em;
+    border-top: 2px solid black;
+}
+
