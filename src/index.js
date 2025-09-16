@@ -4,15 +4,12 @@ import { Display } from "./dom.js";
 
 
 
-const display = new Display()
+const displayForm = new Display()
 document
  .querySelector("#add-project-btn")
  .addEventListener("click", () => {
-    display.addProject();
-   document.querySelector("#add-project-btn").disabled = true;
-
+    displayForm.addProject();
  });
-  
 
 
 
@@ -26,4 +23,3 @@ project.dueDate(todo1.id, "2025-08-30");
 
 console.log(todo1);
 console.log(project.todos[0].date);
-

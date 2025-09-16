@@ -1,4 +1,3 @@
-import {  compareAsc, parseISO } from "date-fns";
 import { Todo } from "./todo.js";
 import { Display } from "./dom.js";
 
@@ -9,15 +8,13 @@ import { Display } from "./dom.js";
     constructor(){
         this.todos = [];
     }
-    addTodo(title, description, priority, dateString) {
-        const todo = new Todo(title, description, priority, false);
-        if (dateString) {
-            const parsed = parseISO(dateString);
-            todo.date.push(parsed);
-    }
-    this.todos.push(todo);
-    return todo;
+
+    addTodo(title, description, priority, date) {
+  const newTodo = new Todo(title, description, priority, false, date);
+  this.todos.push(newTodo);
+  return newTodo;
 }
+
 
     removeTodo(id) {
         const index = this.todos.findIndex(todo => todo.id === id);
@@ -28,27 +25,12 @@ import { Display } from "./dom.js";
         return null;
     }
 
-    addTask(id, newItem) {
-        const index = this.todos.findIndex(todo => todo.id === id);
-        if (index !== -1) {
-            const todo  = this.todos[index];
-            todo.task.push(newItem);
-            return newItem;
+    addTask(projectId, taskName) {
+        const project = this.todos.find((p) => p.id == projectId);
+        if (project) {
+            project.tasks.push(taskName);
         }
-        return null;  
-
     }
-        dueDate(id, newDateString) {
-        const index = this.todos.findIndex(todo => todo.id ===id);
-        if (index !== -1) {
-        const todo = this.todos[index];
-        const parsedDate = parseISO(newDateString);
-        todo.date.push(parsedDate);
-        todo.date.sort(compareAsc);
-        return todo;
-        }
-    return null;
-    }
-}
+ }
 
 export default Project;
