@@ -1,36 +1,26 @@
-import { Todo } from "./todo.js";
-import { Display } from "./dom.js";
+import  Todo  from "./todo.js";
 
+export default class Project {
+  constructor(title) {
+    this.id = crypto.randomUUID();
+    this.title = title;
+    this.todos = [];
+  }
 
-
- class Project {
-    
-    constructor(){
-        this.todos = [];
+  addTodo(todo) {
+    if (todo instanceof Todo) {
+  this.todos.push(todo);
+  } else {
+    throw new Error("Can only add Todo objects to a Project");
     }
+  }
+  removeTodo(id) {
+    const index = this.todos.findIndex(todo => todo.id === id);
 
-    addTodo(title, description, priority, date) {
-  const newTodo = new Todo(title, description, priority, false, date);
-  this.todos.push(newTodo);
-  return newTodo;
+    if (index !== -1) {
+      const [removedTodo] = this.todos.splice(index, 1);
+      return removedTodo;
+    }
+    return null;
+  }
 }
-
-
-    removeTodo(id) {
-        const index = this.todos.findIndex(todo => todo.id === id);
-        if (index !== -1) {
-            const [removedTodo] = this.todos.splice(index, 1);
-            return removedTodo;
-        }
-        return null;
-    }
-
-    addTask(projectId, taskName) {
-        const project = this.todos.find((p) => p.id == projectId);
-        if (project) {
-            project.tasks.push(taskName);
-        }
-    }
- }
-
-export default Project;

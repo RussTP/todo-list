@@ -1,172 +1,151 @@
-import Project from "./project.js";
+
 import { format, isValid } from "date-fns";
 
 export class Display {
-  constructor() {
-    this.project = new Project();
+  constructor(controller) {
+    this.controller = controller;
   }
 
+  projectForm() {
+    console.log("projectForm called");
+    const content = document.querySelector("#form-container");
+    console.log("form container element:", content);
+    
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
 
-addProject() {
-  const content = document.querySelector("#form-container");
-  const overlay = document.createElement("div");
-  overlay.classList.add("overlay");
+    overlay.innerHTML = `
+      <form class="modal-form">
+        <label for="title">Project title:</label>
+        <input type="text" id="title" name="title" required>
+        <input type="submit" value="Submit">
+        <button type="button" id="cancelBtn">Cancel</button>
+      </form>
+    `;
+    content.appendChild(overlay);
+    overlay.style.display = "flex";
 
-  overlay.innerHTML = `
-    <form class="modal-form">
-      <label for="title">Project title:</label>
-      <input type="text" id="title" name="title" required>
+    overlay.querySelector("#cancelBtn").addEventListener("click", () => overlay.remove());
+    console.log("Project form cancelled");
+    overlay.addEventListener("click", event => { if(event.target === overlay) overlay.remove(); 
 
-      <label for="description">Description:</label>
-      <input type="text" id="description" name="description" required>
+    });
 
-      <label for="priority">Priority 0-5</label>
-      <input type="range" id="priority" name="priority" min="0" max="5">
+    const form = overlay.querySelector(".modal-form");
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const title = form.querySelector("#title").value;
+      console.log("Form submitted, title:", title);
+      this.controller.createProject(title);
+      overlay.remove();
+    });
+  }
 
-      <label for="date">Due date:</label>
-      <input type="date" id="due-date" name="due-date" required>
-
-      <input type="submit" id="submit" value="Submit">
-      <button type="button" id="cancelBtn">Cancel</button>
-    </form>
-  `;
-
-  content.appendChild(overlay);
-  overlay.style.display = "flex";
-
-
-  overlay.querySelector("#cancelBtn").addEventListener("click", () => {
-    overlay.remove();
-  });
-
-
-  overlay.addEventListener("click", (event) => {
-    if (event.target === overlay) overlay.remove();
-  });
-
-
-  const form = overlay.querySelector(".modal-form");
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const title = form.querySelector("#title").value;
-    const description = form.querySelector("#description").value;
-    const priority = form.querySelector("#priority").value;
-    const dateStr = form.querySelector("#due-date").value;
-    const date = dateStr ? new Date(dateStr) : null;
-
-    this.project.addTodo(title, description, priority, date);
-
-    overlay.remove(); 
-    this.displayProject();
-  });
-}
-
-  displayProject() {
+  displayProjects(projects) {
+    console.log("displayProjects called with projects", projects);
     const content = document.querySelector("#project-container");
     content.innerHTML = "<h1>My Projects</h1>";
 
-    this.project.todos.forEach((todo) => {
-  const projectCard = document.createElement("div");
-  projectCard.classList.add("project-card");
-  projectCard.id = `project-${todo.id}`;
+    projects.forEach(project => {
+      console.log("rendering project:", project);
+      const projectCard = document.createElement("div");
+      projectCard.classList.add("project-card");
+      projectCard.id = `project-${project.id}`;
+      projectCard.innerHTML = `<h3>Project-${project.title}</h3>`;
 
-  let dueDateText = "No date set";
-  if (todo.date instanceof Date && isValid(todo.date)) {
-    dueDateText = format(todo.date, "MM/dd/yyyy");
-  }
+      const addTodoBtn = document.createElement("button");
+      addTodoBtn.textContent = "Add Todo";
+      addTodoBtn.addEventListener("click", () => this.controller.todoForm(project.id));
+      console.log("Add todo clicked for projects:", project.id);
+      projectCard.appendChild(addTodoBtn);
 
-  projectCard.innerHTML = `
-    <h3>${todo.title}</h3>
-    <p>${todo.description}</p>
-    <p>Priority: ${todo.priority}</p>
-    <p>Due: ${dueDateText}</p>
-  `;
-
-
-  const taskBtn = document.createElement("button");
-  taskBtn.textContent = "Add Task";
-  taskBtn.addEventListener("click", () => this.addNewTask(todo.id));
-  projectCard.appendChild(taskBtn);
+      const removeProjectBtn = document.createElement("button");
+      removeProjectBtn.textContent = "Remove Project";
+      removeProjectBtn.addEventListener("click", () => this.controller.removeProject(project.id)); 
+      console.log("Remove project clicked", project.id);
+      projectCard.appendChild(removeProjectBtn);
 
 
-  const tasksContainer = document.createElement("div");
-  tasksContainer.classList.add("task-container");
+      project.todos.forEach(todo => {
+        console.log("Rendering todo:", todo);
+        const todoEl = document.createElement("div");
+        todoEl.classList.add("todo");
 
-  if (todo.tasks && todo.tasks.length > 0) {
-    todo.tasks.forEach((task) => {
-      const taskEl = document.createElement("div");
-      taskEl.classList.add("task");
+        let dueDateText = todo.date instanceof Date && isValid(todo.date)
+          ? format(todo.date, "MM/dd/yyyy")
+          : "No date set";
+          console.log("todo.date type:", typeof todo.date, todo.date);
+          console.log("is instance of Date:", todo.date instanceof Date);
 
-      const taskText = document.createElement("span");
-      taskText.textContent = task.title;
-      if (task.completed) {
-        taskText.style.textDecoration = "line-through";
-      }
+        todoEl.innerHTML = `<span style="text-decoration:${todo.completed ? "line-through" : "none"}">
+          <b>Todo:</b> ${todo.title} <b>Description:</b> ${todo.description} <b>Due:</b> (${dueDateText}) <b>Priority:</b> ${todo.priority}
+        </span>`;
 
-      const toggleBtn = document.createElement("button");
-      toggleBtn.textContent = task.completed ? "Undo" : "Complete";
-      toggleBtn.addEventListener("click", () => {
-        task.completed = !task.completed;
-        this.displayProject();
+        const toggleBtn = document.createElement("button");
+        toggleBtn.textContent = todo.completed ? "Undo" : "Complete";
+        toggleBtn.addEventListener("click", () => this.controller.toggleComplete(project.id, todo.id));
+        todoEl.appendChild(toggleBtn);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => this.controller.removeTodo(project.id, todo.id));
+        todoEl.appendChild(deleteBtn);
+
+        projectCard.appendChild(todoEl);
       });
-      taskEl.appendChild(toggleBtn);
-      taskEl.appendChild(taskText);
-      tasksContainer.appendChild(taskEl);
-    });
-  } 
 
-  projectCard.appendChild(tasksContainer);
-  content.appendChild(projectCard); 
+      content.appendChild(projectCard);
     });
   }
 
+  todoForm(projectId) {
+    console.log("todoForm called for projectId:", projectId);
+    const projectCard = document.querySelector(`#project-${projectId}`);
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
 
-  addNewTask(projectId) {
-  const projectCard = document.querySelector(`#project-${projectId}`);
-  const overlay = document.createElement("div");
-  overlay.classList.add("overlay");
-
-  overlay.innerHTML = `
-    <form class="modal-form">
-      <label for="task">Task:</label>
-      <input type="text" id="task" name="task" required>
-
-      <input type="submit" value="Submit">
-      <button type="button" id="cancelBtn">Cancel</button>
-    </form>
-  `;
-
-  projectCard.appendChild(overlay);
-  overlay.style.display = "flex";
-
-
-  overlay.querySelector("#cancelBtn").addEventListener("click", () => {
-    overlay.remove();
-  });
-
-  overlay.addEventListener("click", (event) => {
-    if (event.target === overlay) overlay.remove();
-  });
-
-
-  const form = overlay.querySelector(".modal-form");
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const taskName = form.querySelector("#task").value;
-    if (!taskName) return;
+    overlay.innerHTML = `
+      <form class="modal-form">
+        <label for="todo">Todo:</label>
+        <input type="text" id="todo" name="todo" required>
+        <label for="description">Description:</label>
+        <input type="text id="description" name="description" required>
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority">
+         <option value ="low">Low</option>
+         <option value ="medium">Medium</option>
+         <option value ="high">High</option>
+        </select>
+        <label for="date">Due Date:</label>
+        <input type="date" id="date" name="date" required>
         
-    const project = this.project.todos.find((p) => p.id === projectId);
-    if(!project.tasks) project.tasks = [];
-        project.tasks.push({
-          id: Date.now(),
-          title: taskName,
-          completed: false
-        });
+        <input type="submit" value="Submit">
+        <button type="button" id="cancelBtn">Cancel</button>
+      </form>
+    `;
+    projectCard.appendChild(overlay);
+    overlay.style.display = "flex";
 
-    overlay.remove(); 
-    this.displayProject(); 
+    overlay.querySelector("#cancelBtn").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", e => { if(e.target === overlay) overlay.remove(); 
+
+    });
+
+    const form = overlay.querySelector(".modal-form");
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      const todoName = form.querySelector("#todo").value;
+      const priority = form.querySelector("#priority").value;
+      const dateValue = form.querySelector("#date").value;
+      if (!todoName) return;
+      this.controller.addTodo(projectId, {
+        title: todoName,
+        priority: priority,
+        date: dateValue || null
+      });
+
+      console.log("Todo form submitted:", todoName, priority, dateValue);
+      overlay.remove();
     });
   }
 }
