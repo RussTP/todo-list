@@ -17,6 +17,7 @@ export default class Controller {
         this.projectList.addProject(project);
         console.log("project list now:", project)
         this.display.displayProjects(this.projectList.projects);
+        this.display.displayProjectNav(this.projectList.projects);
     }
 
     addTodo(projectId, todoData) {
@@ -48,6 +49,16 @@ export default class Controller {
         this.display.displayProjects(this.projectList.projects);
     }
 
+        collapseTodo(projectId) {
+        const projectCard = document.querySelector(` #project-${projectId}`);
+        if (!projectCard) return;
+           
+        const todosContainer = projectCard.querySelector(".todos-container");
+        if (!todosContainer) return;
+        console.log("Collapsing todos for project:", projectId, todosContainer);
+        todosContainer.classList.toggle("show");
+         }
+
     toggleComplete(projectId, todoId) {
         console.log("toggleComplete called for projectId:", projectId, "todoId", todoId);
         const project = this.projectList.getProject(projectId);
@@ -60,6 +71,9 @@ export default class Controller {
         console.log("Todo after toggle:", todos);
         this.display.displayProjects(this.projectList.projects);
     }
+
+
+
     todoForm(projectId) {
         this.display.todoForm(projectId);
     }
@@ -71,8 +85,11 @@ export default class Controller {
             this.projectList.projects.map(p => p.id));
         
         this.display.displayProjects(this.projectList.projects);
+        this.display.displayProjectNav(this.projectList.projects);
     }
 
 
-}
+    }
+
+
 

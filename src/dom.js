@@ -1,6 +1,7 @@
 
 import { format, isValid } from "date-fns";
 
+
 export class Display {
   constructor(controller) {
     this.controller = controller;
@@ -42,6 +43,13 @@ export class Display {
   }
 
   displayProjects(projects) {
+
+        const priorityColors= {
+        low: "priority-low",
+        medium: "priority-medium",
+        high: "priority-high"
+      };
+
     console.log("displayProjects called with projects", projects);
     const content = document.querySelector("#project-container");
     content.innerHTML = "<h1>My Projects</h1>";
@@ -52,6 +60,12 @@ export class Display {
       projectCard.classList.add("project-card");
       projectCard.id = `project-${project.id}`;
       projectCard.innerHTML = `<h3>Project-${project.title}</h3>`;
+
+      const collapseTodoBtn = document.createElement("button");
+      collapseTodoBtn.textContent = "--";
+      collapseTodoBtn.addEventListener("click", () => this.controller.collapseTodo(project.id));
+      console.log("collapse todo", project.id)
+      projectCard.appendChild(collapseTodoBtn);
 
       const addTodoBtn = document.createElement("button");
       addTodoBtn.textContent = "Add Todo";
@@ -65,11 +79,16 @@ export class Display {
       console.log("Remove project clicked", project.id);
       projectCard.appendChild(removeProjectBtn);
 
+      const todosContainer = document.createElement("div");
+      todosContainer.classList.add("todos-container");
 
       project.todos.forEach(todo => {
         console.log("Rendering todo:", todo);
+
         const todoEl = document.createElement("div");
         todoEl.classList.add("todo");
+
+
 
         let dueDateText = todo.date instanceof Date && isValid(todo.date)
           ? format(todo.date, "MM/dd/yyyy")
@@ -77,8 +96,12 @@ export class Display {
           console.log("todo.date type:", typeof todo.date, todo.date);
           console.log("is instance of Date:", todo.date instanceof Date);
 
-        todoEl.innerHTML = `<span style="text-decoration:${todo.completed ? "line-through" : "none"}">
-          <b>Todo:</b> ${todo.title} <b>Description:</b> ${todo.description} <b>Due:</b> (${dueDateText}) <b>Priority:</b> ${todo.priority}
+    
+
+        const priorityClass = priorityColors[todo.priority] || "priority-low";
+        todoEl.innerHTML = `<span class="priority-indicator ${priorityClass}"></span>
+        <span style="text-decoration:${todo.completed ? "line-through" : "none"}">
+          <b>Todo:</b> <titleTodo contenteditable="true">${todo.title} </titleTodo> <b>Description:</b><todo desc contenteditable="true">${todo.description}</todo desc> <b>Due:</b> (${dueDateText}) 
         </span>`;
 
         const toggleBtn = document.createElement("button");
@@ -91,13 +114,41 @@ export class Display {
         deleteBtn.addEventListener("click", () => this.controller.removeTodo(project.id, todo.id));
         todoEl.appendChild(deleteBtn);
 
-        projectCard.appendChild(todoEl);
+        todosContainer.appendChild(todoEl);
       });
 
+      projectCard.appendChild(todosContainer);
       content.appendChild(projectCard);
     });
   }
 
+
+  displayProjectNav(projects) {
+    const projectListEl = document.querySelector("#project-list");
+    if(!projectListEl) return; 
+    
+projectListEl.innerHTML = "";
+projects.forEach(project => {
+      const item = document.createElement("div");
+      item.classList.add("my-project");
+      item.textContent = project.title;
+      projectListEl.appendChild(item);
+      });
+}
+
+projectNavToggle() {
+  const toggleBtn = document.querySelector("#my-projects-btn");
+    console.log("toggleBtn found:", toggleBtn);
+  if(!toggleBtn) return;
+
+  toggleBtn.addEventListener("click", () => {
+    console.log("my-projects-btn clicked");    
+    const projectListEl = document.querySelector("#project-list");
+    if (projectListEl) {
+    projectListEl.classList.toggle("show");
+    } 
+  });
+}
   todoForm(projectId) {
     console.log("todoForm called for projectId:", projectId);
     const projectCard = document.querySelector(`#project-${projectId}`);
@@ -109,7 +160,7 @@ export class Display {
         <label for="todo">Todo:</label>
         <input type="text" id="todo" name="todo" required>
         <label for="description">Description:</label>
-        <input type="text id="description" name="description" required>
+        <input type="text" id="description" name="description" required>
         <label for="priority">Priority:</label>
         <select id="priority" name="priority">
          <option value ="low">Low</option>
@@ -135,12 +186,14 @@ export class Display {
     form.addEventListener("submit", event => {
       event.preventDefault();
       const todoName = form.querySelector("#todo").value;
+      const description = form.querySelector("#description").value;
       const priority = form.querySelector("#priority").value;
       const dateValue = form.querySelector("#date").value;
       if (!todoName) return;
       this.controller.addTodo(projectId, {
         title: todoName,
-        priority: priority,
+        description,
+         priority,
         date: dateValue || null
       });
 
