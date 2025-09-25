@@ -1,19 +1,15 @@
-import  Todo  from "./todo.js";
-
 export default class Project {
   constructor(title) {
     this.id = crypto.randomUUID();
     this.title = title;
     this.todos = [];
+    console.log("New project created:", this.title, "with ID:", this.id);
   }
 
   addTodo(todo) {
-    if (todo instanceof Todo) {
   this.todos.push(todo);
-  } else {
-    throw new Error("Can only add Todo objects to a Project");
     }
-  }
+  
   removeTodo(id) {
     const index = this.todos.findIndex(todo => todo.id === id);
 

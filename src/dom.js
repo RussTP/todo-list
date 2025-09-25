@@ -5,6 +5,18 @@ import { format, isValid } from "date-fns";
 export class Display {
   constructor(controller) {
     this.controller = controller;
+    this.expandedProjects = new Set();
+  }
+
+  toggleExpanded(projectId) {
+    if (this.expandedProjects.has(projectId)) {
+      this.expandedProjects.delete(projectId);
+    }else {
+      this.expandedProjects.add(projectId);
+    }
+    const card = document.querySelector(`#project-${projectId}`);
+    const container = card?.querySelector(".todos-container");
+    container?.classList.toggle("show");
   }
 
   projectForm() {
@@ -55,21 +67,32 @@ export class Display {
     content.innerHTML = "<h1>My Projects</h1>";
 
     projects.forEach(project => {
-      console.log("rendering project:", project);
+       console.log("🔎 Rendering project", project.title, "with ID:", project.id);
       const projectCard = document.createElement("div");
+      projectCard.addEventListener("click", (event) => {
+        if (event.target.closest("button, input, select, textarea, label, form")) return;
+        this.toggleExpanded(project.id);
+      });
+
       projectCard.classList.add("project-card");
       projectCard.id = `project-${project.id}`;
       projectCard.innerHTML = `<h3>Project-${project.title}</h3>`;
+      
 
       const collapseTodoBtn = document.createElement("button");
-      collapseTodoBtn.textContent = "--";
-      collapseTodoBtn.addEventListener("click", () => this.controller.collapseTodo(project.id));
-      console.log("collapse todo", project.id)
+      collapseTodoBtn.textContent = "--"
+      collapseTodoBtn.id ="collapse-btn";
+      collapseTodoBtn.addEventListener("click", () => {
+        this.controller.collapseTodo(project.id)
+        });
       projectCard.appendChild(collapseTodoBtn);
 
       const addTodoBtn = document.createElement("button");
       addTodoBtn.textContent = "Add Todo";
-      addTodoBtn.addEventListener("click", () => this.controller.todoForm(project.id));
+      addTodoBtn.addEventListener("click", () => {
+        this.controller.todoForm(project.id)
+          
+      });
       console.log("Add todo clicked for projects:", project.id);
       projectCard.appendChild(addTodoBtn);
 
@@ -81,9 +104,12 @@ export class Display {
 
       const todosContainer = document.createElement("div");
       todosContainer.classList.add("todos-container");
+      if(this.expandedProjects.has(project.id)) {
+        todosContainer.classList.add("show");
+      }
 
       project.todos.forEach(todo => {
-        console.log("Rendering todo:", todo);
+      console.log("   ↳ Rendering todo:", todo.title, "ID:", todo.id);
 
         const todoEl = document.createElement("div");
         todoEl.classList.add("todo");
@@ -106,14 +132,17 @@ export class Display {
 
         const toggleBtn = document.createElement("button");
         toggleBtn.textContent = todo.completed ? "Undo" : "Complete";
-        toggleBtn.addEventListener("click", () => this.controller.toggleComplete(project.id, todo.id));
+        toggleBtn.addEventListener("click", () => {
+          this.controller.toggleComplete(project.id, todo.id);
+      });
         todoEl.appendChild(toggleBtn);
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Delete";
-        deleteBtn.addEventListener("click", () => this.controller.removeTodo(project.id, todo.id));
+        deleteBtn.addEventListener("click", () => {
+          this.controller.removeTodo(project.id, todo.id); 
+          });
         todoEl.appendChild(deleteBtn);
-
         todosContainer.appendChild(todoEl);
       });
 
@@ -136,13 +165,15 @@ projects.forEach(project => {
       });
 }
 
+
+
 projectNavToggle() {
   const toggleBtn = document.querySelector("#my-projects-btn");
     console.log("toggleBtn found:", toggleBtn);
   if(!toggleBtn) return;
 
   toggleBtn.addEventListener("click", () => {
-    console.log("my-projects-btn clicked");    
+    console.log("my-projects-btn clicked");
     const projectListEl = document.querySelector("#project-list");
     if (projectListEl) {
     projectListEl.classList.toggle("show");
@@ -178,7 +209,7 @@ projectNavToggle() {
     overlay.style.display = "flex";
 
     overlay.querySelector("#cancelBtn").addEventListener("click", () => overlay.remove());
-    overlay.addEventListener("click", e => { if(e.target === overlay) overlay.remove(); 
+    overlay.addEventListener("click", event => { if(event.target === overlay) overlay.remove(); 
 
     });
 
