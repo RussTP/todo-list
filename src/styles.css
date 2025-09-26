@@ -5,16 +5,29 @@
 }
 
 :root {
-    --content-background: rgb(54, 54, 54);
-    --nav-background: rgb(82, 82, 82);
-    --button-hover: rgba(207, 207, 207, 0.473) ;
+    --content-background: #050a30;
+    --nav-background: #000c66;
+    --button-hover: #0000ff;
+    --text-color: #7ec8e3;
+    --box-shadow:#7ec8e388;
+}
+
+p, h1, h2 {
+    color: var(--text-color);
+}
+
+p {
+    font-size: 0.8rem;
+
+
 }
 
 nav {
     display: flex;
+    position: fixed;
     justify-content: center;
     height: 100vh;
-    width: 20rem;
+    width: 12em;
     background-color: var(--nav-background);
 }
 
@@ -26,6 +39,11 @@ header {
 body {
     display: flex;
     background-color: var(--content-background);
+}
+
+button {
+    color: var(--text-color);
+    background-color: var(--nav-background);
 }
 
 .button-container button {
@@ -68,7 +86,7 @@ width: 20rem;
 align-items: flex-start;
 justify-content: flex-start;
 background-color: var(--nav-background);
-
+height: 100vh;
 }
 
 #main-content {
@@ -105,7 +123,7 @@ background-color: var(--nav-background);
     text-align: center;
     gap: 0.6rem;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px var(--box-shadow);
     max-width: 30rem;
     height: auto;
     width: 90%;
@@ -156,12 +174,11 @@ background-color: var(--nav-background);
     opacity: 1;
     max-height: 1000px;
     width: 100%;
-    box-shadow: 1px 1px 10px 1px rgba(110, 110, 110, 0.600);
     
 }
 
 
-.todo {
+.todo  {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -169,12 +186,35 @@ background-color: var(--nav-background);
     padding: 1rem;
     height: auto;
     width: 100%;
-    border: 1px solid rgba(110, 110, 110, 0.600);
-    box-shadow: 5px 5px 5px 5px rgba(110, 110, 110, 0.600);
+    border: 1px solid var(--box-shadow);
+    box-shadow: 0 6px 15px var(--box-shadow);
     background-color: var(--nav-background);
+    color: var(--text-color);
+    transform: perspective(1000px) rotateX(0) rotateY(0) translateZ(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.todo .todo-text {
+    display: inline-block;
+    max-width: 100%;
+}
 
+.todo:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(10px);
+  box-shadow: 0 12px 25px #7ec8e371;
+    
+}
+
+.todo:active {
+  transform: perspective(1000px) rotateX(0) rotateY(0) translateZ(4px) scale(0.97);
+  box-shadow: 0 4px 10px #7ec8e341;
+}
+
+.completed {
+  text-decoration-line: line-through; 
+  text-decoration-color: #0000ff;      
+  text-decoration-thickness: 2px;      
+}
 
 
 .project-card > button, .todo > button {
@@ -224,10 +264,14 @@ background-color: var(--nav-background);
 #project-list.show {
 transform: scaleY(1);
 width: 100%;
+color: var(--text-color);
 justify-content: center;
 align-items: center;
 opacity: 1;
-box-shadow: 2px 0 2px 3px rgba(54, 54, 54, 0.500);
+border-top: 1px solid var(--box-shadow);
+border-bottom: 1px solid var(--box-shadow);
+box-shadow: -2px 2px 7px -5px var(--box-shadow);
+
 }
 
 .my-project {
@@ -241,3 +285,4 @@ box-shadow: 2px 0 2px 3px rgba(54, 54, 54, 0.500);
  background-color: var(--button-hover);
 
 }
+

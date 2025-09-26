@@ -95,6 +95,22 @@ export default class Controller {
     this.display.displayProjects(this.projectList.projects);
   }
 
+    toggleProjectComplete(projectId) {
+    console.log("toggle Project Complete projectId:", projectId);
+    const project = this.projectList.getProject(projectId);
+    if (!project) {
+      console.error("project complete: project not found", projectId);
+      return;
+    }
+    if (typeof project.toggleProjectComplete === "function") {
+      project.toggleProjectComplete();
+    }else {
+      project.completed = !project.completed;
+    }
+    console.log("project completed:", project);
+    this.display.displayProjects(this.projectList.projects);
+  }
+
   todoForm(projectId) {
     this.display.todoForm(projectId);
   }

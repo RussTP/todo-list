@@ -69,14 +69,10 @@ export class Display {
     projects.forEach(project => {
        console.log("🔎 Rendering project", project.title, "with ID:", project.id);
       const projectCard = document.createElement("div");
-      projectCard.addEventListener("click", (event) => {
-        if (event.target.closest("button, input, select, textarea, label, form")) return;
-        this.toggleExpanded(project.id);
-      });
-
       projectCard.classList.add("project-card");
       projectCard.id = `project-${project.id}`;
-      projectCard.innerHTML = `<h3>Project-${project.title}</h3>`;
+      projectCard.innerHTML = `<h2>Project-${project.title}</h2>`;
+
       
 
       const collapseTodoBtn = document.createElement("button");
@@ -96,6 +92,14 @@ export class Display {
       console.log("Add todo clicked for projects:", project.id);
       projectCard.appendChild(addTodoBtn);
 
+
+      const projectComplete = document.createElement("button");
+      projectComplete.textContent = project.completed ? "Incomplete" : "Complete";
+      projectComplete.addEventListener("click", () => 
+      this.controller.toggleProjectComplete(project.id));
+      projectCard.appendChild(projectComplete);
+
+
       const removeProjectBtn = document.createElement("button");
       removeProjectBtn.textContent = "Remove Project";
       removeProjectBtn.addEventListener("click", () => this.controller.removeProject(project.id)); 
@@ -110,11 +114,8 @@ export class Display {
 
       project.todos.forEach(todo => {
       console.log("   ↳ Rendering todo:", todo.title, "ID:", todo.id);
-
         const todoEl = document.createElement("div");
         todoEl.classList.add("todo");
-
-
 
         let dueDateText = todo.date instanceof Date && isValid(todo.date)
           ? format(todo.date, "MM/dd/yyyy")
@@ -122,13 +123,15 @@ export class Display {
           console.log("todo.date type:", typeof todo.date, todo.date);
           console.log("is instance of Date:", todo.date instanceof Date);
 
-    
-
         const priorityClass = priorityColors[todo.priority] || "priority-low";
+        const completedClass = todo.completed ? "completed" : "";
         todoEl.innerHTML = `<span class="priority-indicator ${priorityClass}"></span>
-        <span style="text-decoration:${todo.completed ? "line-through" : "none"}">
-          <b>Todo:</b> <titleTodo contenteditable="true">${todo.title} </titleTodo> <b>Description:</b><todo desc contenteditable="true">${todo.description}</todo desc> <b>Due:</b> (${dueDateText}) 
-        </span>`;
+      <span class="${completedClass}">
+        <b>Todo:</b> ${todo.title} 
+        <b>Description:</b> ${todo.description} 
+        <b>Due:</b> (${dueDateText})
+     </span>
+    `;
 
         const toggleBtn = document.createElement("button");
         toggleBtn.textContent = todo.completed ? "Undo" : "Complete";
@@ -161,8 +164,20 @@ projects.forEach(project => {
       const item = document.createElement("div");
       item.classList.add("my-project");
       item.textContent = project.title;
+      item.dataset.projectId = project.id;
       projectListEl.appendChild(item);
+
+      item.addEventListener("click", () => {
+        this.controller.collapseTodo(project.id);
       });
+        projectListEl.appendChild(item);
+      });
+}
+
+displayProjectComplete(projects) {
+    const projectCompleteListEl = document.querySelector("#project-list");
+      if(!projectCompleteListEl) return;
+      
 }
 
 
@@ -188,11 +203,11 @@ projectNavToggle() {
 
     overlay.innerHTML = `
       <form class="modal-form">
-        <label for="todo">Todo:</label>
+        <label for="todo"><p>Todo:</p></label>
         <input type="text" id="todo" name="todo" required>
-        <label for="description">Description:</label>
+        <label for="description"><p>Description:</p></label>
         <input type="text" id="description" name="description" required>
-        <label for="priority">Priority:</label>
+        <label for="priority"><p>Priority:</p></label>
         <select id="priority" name="priority">
          <option value ="low">Low</option>
          <option value ="medium">Medium</option>
