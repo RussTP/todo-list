@@ -46,15 +46,35 @@ button {
     background-color: var(--nav-background);
 }
 
+
+.button-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
 .button-container button {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     height: 3rem;
-    padding-left: 2rem;
+    padding: 0.5rem 1rem;
     width: 100%;
     border: none;
     background-color: var(--nav-background);
+    cursor: pointer;
+}
+
+.caret {
+    transition: transform 0.3s ease; 
+    transform: rotate(-90deg);
+    height: 24px;
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.button-container.open .caret {
+    transform: rotate(0deg);
 }
 
 button:hover {
@@ -67,11 +87,6 @@ h1 {
 }
 
 
-.button-container {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-}
 
 #delete-button {
     display: flex;
@@ -81,13 +96,55 @@ h1 {
 
 #sidebar-container {
 display: flex;
+flex-direction: column;
 margin-top: 10rem;
+flex-direction: column;
 width: 20rem;
 align-items: flex-start;
 justify-content: flex-start;
 background-color: var(--nav-background);
 height: 100vh;
 }
+
+#project-list, #complete-project-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    top: 100%;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    height: auto;
+     color: var(--text-color);
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+
+}
+
+#project-list.show, #complete-project-list.show {
+    transform: scaleY(1);
+    width: 100%;
+    max-height: 800px;
+    color: var(--text-color);
+    opacity: 1;
+    border-top: 1px solid var(--box-shadow);
+    border-bottom: 1px solid var(--box-shadow);
+    box-shadow: -2px 2px 7px -5px var(--box-shadow);
+    cursor: pointer;
+
+}
+
+#project-list.show:empty,
+#complete-project-list.show:empty {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+
+
 
 #main-content {
     display: flex;
@@ -249,30 +306,7 @@ height: 100vh;
     box-shadow: 0 0 1px 3px rgba(255, 0, 0, 0.600);
 }
 
-#project-list {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    transform: scaleY(0);
-    transform-origin: top;
-    opacity: 0;
-    transition: transform 0.5s ease;
 
-}
-
-
-#project-list.show {
-transform: scaleY(1);
-width: 100%;
-color: var(--text-color);
-justify-content: center;
-align-items: center;
-opacity: 1;
-border-top: 1px solid var(--box-shadow);
-border-bottom: 1px solid var(--box-shadow);
-box-shadow: -2px 2px 7px -5px var(--box-shadow);
-
-}
 
 .my-project {
     width: 100%;
@@ -282,7 +316,7 @@ box-shadow: -2px 2px 7px -5px var(--box-shadow);
 }
 
 .my-project:hover {
- background-color: var(--button-hover);
+    background-color: var(--button-hover);
 
 }
 

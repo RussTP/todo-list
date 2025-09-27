@@ -1,4 +1,4 @@
-// controller.js
+
 import Project from "./project.js";
 import Todo from "./todo.js";
 import ProjectList from "./projectList.js";
@@ -12,11 +12,14 @@ export default class Controller {
 
     console.log("Controller initialized. Projects:", this.projectList.projects.map(p => ({ id: p.id, title: p.title })));
 
-    // Render on startup
+   
     if (this.display && typeof this.display.displayProjects === "function") {
       this.display.displayProjects(this.projectList.projects);
       if (typeof this.display.displayProjectNav === "function") {
         this.display.displayProjectNav(this.projectList.projects);
+      }
+      if (typeof this.display.displayCompleteProjectNav === "function") {
+        this.display.displayCompleteProjectNav(this.projectList.projects);
       }
     }
   }
@@ -109,6 +112,7 @@ export default class Controller {
     }
     console.log("project completed:", project);
     this.display.displayProjects(this.projectList.projects);
+    this.display.displayCompleteProjectNav(this.projectList.projects);
   }
 
   todoForm(projectId) {
@@ -122,6 +126,10 @@ export default class Controller {
     this.display.displayProjects(this.projectList.projects);
     if (typeof this.display.displayProjectNav === "function") {
       this.display.displayProjectNav(this.projectList.projects);
-    }
+    
+    if (typeof this.display.displayCompleteProjectNav ==="function") {
+      this.display.displayCompleteProjectNav(this.projectList.projects);
+      }
   }
 }
+};

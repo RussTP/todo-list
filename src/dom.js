@@ -174,13 +174,6 @@ projects.forEach(project => {
       });
 }
 
-displayProjectComplete(projects) {
-    const projectCompleteListEl = document.querySelector("#project-list");
-      if(!projectCompleteListEl) return;
-      
-}
-
-
 
 projectNavToggle() {
   const toggleBtn = document.querySelector("#my-projects-btn");
@@ -192,9 +185,46 @@ projectNavToggle() {
     const projectListEl = document.querySelector("#project-list");
     if (projectListEl) {
     projectListEl.classList.toggle("show");
+     toggleBtn.parentElement.classList.toggle("open");
     } 
   });
 }
+
+displayCompleteProjectNav(projects) {
+  const projectListEl = document.querySelector("#complete-project-list");
+  if (!projectListEl) return;
+
+  projectListEl.innerHTML = "";
+  projects
+  .filter(p => p.completed)
+  .forEach(project => {
+    const item = document.createElement("div");
+    item.classList.add("my-project");
+    item.textContent = project.title;
+    item.dataset.projectId = project.id;
+    item.addEventListener("click", () => {
+      this.controller.collapseTodo(project.id);
+    });
+    projectListEl.appendChild(item);
+  });
+}
+
+completeProjectNavToggle() {
+  const toggleBtn = document.querySelector("#complete-projects-btn");
+    console.log("toggleBtn project complete found:", toggleBtn);
+    if(!toggleBtn) return;
+
+    toggleBtn.addEventListener("click", () => {
+      console.log("complete-projects-btn clicked");
+      const projectListEl = document.querySelector("#complete-project-list");
+      if (projectListEl) {
+        projectListEl.classList.toggle("show");
+        toggleBtn.parentElement.classList.toggle("open");
+      }
+    });
+}
+
+
   todoForm(projectId) {
     console.log("todoForm called for projectId:", projectId);
     const projectCard = document.querySelector(`#project-${projectId}`);

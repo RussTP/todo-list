@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     display.displayProjects(projectList.projects);
     display.displayProjectNav(projectList.projects);
     display.projectNavToggle();
+    display.completeProjectNavToggle();
 });
 
 

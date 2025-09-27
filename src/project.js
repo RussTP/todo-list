@@ -1,8 +1,9 @@
 export default class Project {
-  constructor(title) {
+  constructor(title, completed = false) {
     this.id = crypto.randomUUID();
     this.title = title;
     this.todos = [];
+    this.completed = completed;
     console.log("New project created:", this.title, "with ID:", this.id);
   }
 
