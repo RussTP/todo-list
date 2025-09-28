@@ -71,67 +71,104 @@ export class Display {
       const projectCard = document.createElement("div");
       projectCard.classList.add("project-card");
       projectCard.id = `project-${project.id}`;
-      projectCard.innerHTML = `<h2>Project-${project.title}</h2>`;
+      projectCard.innerHTML = `<h2>${project.title}</h2>`;
 
       
-
+      const buttonGroup = document.createElement("div");
+      buttonGroup.classList.add("project-card-btn");
+      
       const collapseTodoBtn = document.createElement("button");
-      collapseTodoBtn.textContent = "--"
-      collapseTodoBtn.id ="collapse-btn";
+      collapseTodoBtn.classList.add("collapse-btn");
       collapseTodoBtn.addEventListener("click", () => {
         this.controller.collapseTodo(project.id)
+         collapseTodoBtn.classList.toggle("is-open");
         });
-      projectCard.appendChild(collapseTodoBtn);
+      buttonGroup.appendChild(collapseTodoBtn);
 
       const addTodoBtn = document.createElement("button");
-      addTodoBtn.textContent = "Add Todo";
+      addTodoBtn.classList.add("add-todo-btn");
       addTodoBtn.addEventListener("click", () => {
         this.controller.todoForm(project.id)
           
       });
       console.log("Add todo clicked for projects:", project.id);
-      projectCard.appendChild(addTodoBtn);
+      buttonGroup.appendChild(addTodoBtn);
 
 
       const projectComplete = document.createElement("button");
-      projectComplete.textContent = project.completed ? "Incomplete" : "Complete";
-      projectComplete.addEventListener("click", () => 
-      this.controller.toggleProjectComplete(project.id));
-      projectCard.appendChild(projectComplete);
+      projectComplete.classList.add("project-complete-btn");
+      if(project.completed) projectComplete.classList.add("is-complete");
+
+      projectComplete.addEventListener("click", (event) => {
+        event.stopPropagation(); 
+      this.controller.toggleProjectComplete(project.id);
+      });
+
+      buttonGroup.appendChild(projectComplete);
 
 
       const removeProjectBtn = document.createElement("button");
-      removeProjectBtn.textContent = "Remove Project";
+      removeProjectBtn.classList.add("remove-project-btn");
       removeProjectBtn.addEventListener("click", () => this.controller.removeProject(project.id)); 
       console.log("Remove project clicked", project.id);
-      projectCard.appendChild(removeProjectBtn);
+      buttonGroup.appendChild(removeProjectBtn);
+       projectCard.appendChild(buttonGroup);
 
       const todosContainer = document.createElement("div");
       todosContainer.classList.add("todos-container");
       if(this.expandedProjects.has(project.id)) {
         todosContainer.classList.add("show");
       }
+     
 
       project.todos.forEach(todo => {
       console.log("   ↳ Rendering todo:", todo.title, "ID:", todo.id);
         const todoEl = document.createElement("div");
         todoEl.classList.add("todo");
 
+        const priorityClass = priorityColors[todo.priority] || "priority-low";
+           
         let dueDateText = todo.date instanceof Date && isValid(todo.date)
           ? format(todo.date, "MM/dd/yyyy")
           : "No date set";
           console.log("todo.date type:", typeof todo.date, todo.date);
           console.log("is instance of Date:", todo.date instanceof Date);
 
-        const priorityClass = priorityColors[todo.priority] || "priority-low";
-        const completedClass = todo.completed ? "completed" : "";
-        todoEl.innerHTML = `<span class="priority-indicator ${priorityClass}"></span>
-      <span class="${completedClass}">
-        <b>Todo:</b> ${todo.title} 
-        <b>Description:</b> ${todo.description} 
-        <b>Due:</b> (${dueDateText})
-     </span>
-    `;
+        const priorityIndicator = document.createElement("span");
+        priorityIndicator.classList.add("priority-indicator", priorityClass);
+        todoEl.appendChild(priorityIndicator);
+
+        const textWrapper = document.createElement("div");
+
+        const titleSpan = document.createElement("span");
+        titleSpan.classList.add("todo-title");
+        titleSpan.textContent = todo.title;
+        if (todo.completed) {
+          titleSpan.style.textDecoration = "line-through";
+        }
+
+        textWrapper.appendChild(titleSpan);
+        textWrapper.append(" ");
+
+        const descSpan = document.createElement("span");
+        descSpan.classList.add("todo-desc");
+        descSpan.textContent = todo.description;
+        if (todo.completed) {
+          descSpan.style.textDecoration = "line-through";
+        }
+        
+        textWrapper.appendChild(descSpan);
+        textWrapper.append(" ");
+
+        const dueSpan = document.createElement("span");
+        dueSpan.classList.add("todo-date");
+        dueSpan.textContent = dueDateText;
+        if (todo.completed) {
+          dueSpan.style.textDecoration = "line-through";
+        }
+
+        textWrapper.appendChild(dueSpan);
+        todoEl.appendChild(textWrapper);
 
         const toggleBtn = document.createElement("button");
         toggleBtn.textContent = todo.completed ? "Undo" : "Complete";
@@ -139,6 +176,67 @@ export class Display {
           this.controller.toggleComplete(project.id, todo.id);
       });
         todoEl.appendChild(toggleBtn);
+
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () => {
+         const overlay = document.createElement("div");
+  overlay.classList.add("overlay");
+
+  overlay.innerHTML = `
+    <form class="modal-form">
+      <label for="edit-title">Title:</label>
+      <input type="text" id="edit-title" value="${todo.title}" required>
+
+      <label for="edit-description">Description:</label>
+      <textarea id="edit-description">${todo.description}</textarea>
+
+      <label for="edit-priority">Priority:</label>
+      <select id="edit-priority">
+        <option value="low" ${todo.priority === "low" ? "selected" : ""}>Low</option>
+        <option value="medium" ${todo.priority === "medium" ? "selected" : ""}>Medium</option>
+        <option value="high" ${todo.priority === "high" ? "selected" : ""}>High</option>
+      </select>
+
+      <label for="edit-date">Due Date:</label>
+      <input type="date" id="edit-date" value="${
+        todo.date instanceof Date
+          ? todo.date.toISOString().split("T")[0]
+          : ""
+      }">
+
+      <input type="submit" value="Save">
+      <button type="button" id="cancelBtn">Cancel</button>
+    </form>
+  `;
+      document.body.appendChild(overlay);
+      overlay.style.display = "flex";
+
+      overlay.querySelector("#cancelBtn").addEventListener("click", () => overlay.remove());
+      overlay.addEventListener("click", event => {
+        if (event.target === overlay) overlay.remove();
+      });
+
+      overlay.querySelector("form").addEventListener("submit", (event) => {
+        event.preventDefault();
+
+      const updates = {
+      title: overlay.querySelector("#edit-title").value,
+      description: overlay.querySelector("#edit-description").value,
+      priority: overlay.querySelector("#edit-priority").value,
+      date: overlay.querySelector("#edit-date").value || null
+    };
+        this.controller.editTodo(project.id, todo.id, updates);
+
+        overlay.remove();
+      });
+    });
+
+
+        todoEl.appendChild(editBtn);
+
+
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Delete";
@@ -152,6 +250,7 @@ export class Display {
       projectCard.appendChild(todosContainer);
       content.appendChild(projectCard);
     });
+
   }
 
 

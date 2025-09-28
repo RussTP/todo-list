@@ -57,18 +57,39 @@ export default class Controller {
       console.error("removeTodo: Project not found for id:", projectId, "projects:", this.projectList.projects.map(p => p.id));
       return;
     }
-
     const normalizedTodoId = String(todoId);
     const idx = project.todos.findIndex(t => String(t.id) === normalizedTodoId);
     if (idx === -1) {
       console.error("removeTodo: Todo not found:", todoId, "in project:", project.id, "todoIDs:", project.todos.map(t => t.id));
       return;
     }
-
     project.todos.splice(idx, 1);
     console.log("Todo removed. Project todos now:", project.todos.map(t => t.id));
     this.display.displayProjects(this.projectList.projects);
   }
+
+
+      editTodo(projectId, todoId, updates) {
+      console.log("editTodo called with:", {projectId, todoId});
+      const project = this.projectList.getProject(projectId);
+      if (!project) {
+        console.error("editTodo: Project not found for id:", projectId);
+        return;
+      }
+      
+      const todo = project.todos.find(t => String(t.id) === String(todoId));
+      if (!todo) {
+        console.error("editTodo not found", todoId);
+        return
+      }
+      if (updates.title !== undefined) todo.title = updates.title;
+      if (updates.description !== undefined)todo.description = updates.description;
+      if (updates.priority !== undefined)todo.priority = updates.priority;
+      if (updates.date !== undefined)todo.date = updates.date;
+      console.log("todo update:", todo);
+      this.display.displayProjects(this.projectList.projects);
+      
+    }
 
   collapseTodo(projectId) {
   this.display.toggleExpanded(projectId);
