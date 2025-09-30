@@ -88,7 +88,7 @@ export class Display {
 
     console.log("displayProjects called with projects", projects);
     const content = document.querySelector("#project-container");
-    content.innerHTML = "<h1>My Projects</h1>";
+    content.innerHTML = "<h1>Todo, maybe later</h1>";
 
     projects.forEach(project => {
        console.log("🔎 Rendering project", project.title, "with ID:", project.id);
@@ -162,14 +162,10 @@ export class Display {
           console.log("todo.date type:", typeof todo.date, todo.date);
           console.log("is instance of Date:", todo.date instanceof Date);
 
-        const priorityIndicator = document.createElement("span");
-        priorityIndicator.classList.add("priority-indicator", priorityClass);
-        todoEl.appendChild(priorityIndicator);
+  
 
         const textWrapper = document.createElement("div");
         textWrapper.classList.add("todo-text");
-        textWrapper.textContent = `${todo.title} - ${todo.description} (${dueDateText})`;
-        todoEl.appendChild(textWrapper);
         
         const titleLabel = document.createElement("b")
         titleLabel.textContent ="Todo: ";
@@ -181,7 +177,7 @@ export class Display {
         }
         textWrapper.appendChild(titleLabel);
         textWrapper.appendChild(titleSpan);
-        textWrapper.append(" ");
+     
 
         const descLabel = document.createElement("b");
         const descSpan = document.createElement("span");
@@ -194,7 +190,7 @@ export class Display {
         
         textWrapper.append(descLabel);
         textWrapper.appendChild(descSpan);
-        textWrapper.append(" ");
+     
 
         const dueLabel = document.createElement("b");
         const dueSpan = document.createElement("span");
@@ -210,7 +206,13 @@ export class Display {
         todoEl.appendChild(textWrapper);
         
         
-
+        const todoBtnContainer = document.createElement("div");
+        todoBtnContainer.classList.add("todo-btn-group");
+        
+        const priorityIndicator = document.createElement("span");
+        priorityIndicator.classList.add("priority-indicator", priorityClass);
+        todoBtnContainer.appendChild(priorityIndicator);
+        
         const toggleBtn = document.createElement("button");
         toggleBtn.classList.add("todo-toggle-btn");
          if(todo.completed)toggleBtn.classList.add("todo-is-complete");
@@ -218,7 +220,7 @@ export class Display {
           toggleBtn.addEventListener("click", () => {
           this.controller.toggleComplete(project.id, todo.id);
       });
-        todoEl.appendChild(toggleBtn);
+        todoBtnContainer.appendChild(toggleBtn);
 
 
         const editBtn = document.createElement("button");
@@ -277,7 +279,7 @@ export class Display {
     });
 
 
-        todoEl.appendChild(editBtn);
+      todoBtnContainer.appendChild(editBtn);
 
 
 
@@ -286,8 +288,9 @@ export class Display {
         deleteBtn.addEventListener("click", () => {
           this.controller.removeTodo(project.id, todo.id); 
           });
-        todoEl.appendChild(deleteBtn);
-        todosContainer.appendChild(todoEl);
+      todoBtnContainer.appendChild(deleteBtn);
+       todoEl.appendChild(todoBtnContainer);
+       todosContainer.appendChild(todoEl);
       });
 
       projectCard.appendChild(todosContainer);
