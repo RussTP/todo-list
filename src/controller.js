@@ -134,6 +134,7 @@ export default class Controller {
     console.log("project completed:", project);
     this.display.displayProjects(this.projectList.projects);
     this.display.displayCompleteProjectNav(this.projectList.projects);
+    
   }
 
   todoForm(projectId) {

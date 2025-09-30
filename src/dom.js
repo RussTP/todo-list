@@ -167,6 +167,10 @@ export class Display {
         todoEl.appendChild(priorityIndicator);
 
         const textWrapper = document.createElement("div");
+        textWrapper.classList.add("todo-text");
+        textWrapper.textContent = `${todo.title} - ${todo.description} (${dueDateText})`;
+        todoEl.appendChild(textWrapper);
+        
         const titleLabel = document.createElement("b")
         titleLabel.textContent ="Todo: ";
         const titleSpan = document.createElement("span");
@@ -204,6 +208,8 @@ export class Display {
         textWrapper.appendChild(dueLabel);
         textWrapper.appendChild(dueSpan);
         todoEl.appendChild(textWrapper);
+        
+        
 
         const toggleBtn = document.createElement("button");
         toggleBtn.classList.add("todo-toggle-btn");
@@ -292,22 +298,26 @@ export class Display {
 
 
   displayProjectNav(projects) {
-    const projectListEl = document.querySelector("#project-list");
-    if(!projectListEl) return; 
+    const projectListEls = document.querySelectorAll("#project-list, #project-list-mobile");
+    if(!projectListEls.length) return;
     
+    projectListEls.forEach(projectListEl => {
 projectListEl.innerHTML = "";
+
 projects.forEach(project => {
       const item = document.createElement("div");
       item.classList.add("my-project");
       item.textContent = project.title;
       item.dataset.projectId = project.id;
-      projectListEl.appendChild(item);
 
       item.addEventListener("click", () => {
         this.controller.collapseTodo(project.id);
+      
       });
+   
         projectListEl.appendChild(item);
       });
+    });
 }
 
 
@@ -320,21 +330,26 @@ projectNavToggle() {
   toggleBtn.addEventListener("click", () => {
    console.log(`${toggleBtn.id} clicked`);
 
-    const projectListEl = document.querySelector("#project-list");
-    if (projectListEl) {
-    projectListEl.classList.toggle("show");
+    const projectListEls = document.querySelectorAll("#project-list, #project-list-mobile");
+    if (!projectListEls.length) return; {
+      projectListEls.forEach(projectListEl => {
+      projectListEl.classList.toggle("show");
+      });
+
      toggleBtn.parentElement.classList.toggle("open");
      } 
     });
+    
   });
 }
 
 
 displayCompleteProjectNav(projects) {
-  const projectListEl = document.querySelector("#complete-project-list");
-  if (!projectListEl) return;
-
+  const projectListEls = document.querySelectorAll("#complete-project-list, #complete-project-list-mobile");
+  if (!projectListEls.length) return;
+  projectListEls.forEach(projectListEl => {
   projectListEl.innerHTML = "";
+  
   projects
   .filter(p => p.completed)
   .forEach(project => {
@@ -344,24 +359,28 @@ displayCompleteProjectNav(projects) {
     item.dataset.projectId = project.id;
     item.addEventListener("click", () => {
       this.controller.collapseTodo(project.id);
-    });
+  });
     projectListEl.appendChild(item);
+    });
   });
 }
 
 completeProjectNavToggle() {
   const toggleBtns = document.querySelectorAll("#complete-projects-btn, #complete-projects-btn-mobile");
     console.log("toggleBtn project complete found:", toggleBtns);
-    if(!toggleBtns) return;
+    if(toggleBtns.length === 0) return;
 
     toggleBtns.forEach(toggleBtn => {
     toggleBtn.addEventListener("click", () => {
       console.log("complete-projects-btn clicked");
-      const projectListEl = document.querySelector("#complete-project-list");
-      if (projectListEl) {
-        projectListEl.classList.toggle("show");
+      const projectListEls = document.querySelectorAll("#complete-project-list, #complete-project-list-mobile");
+      if (projectListEls.length === 0) return; 
+        projectListEls.forEach(projectListEl => {
+          projectListEl.classList.toggle("show");
+        });
+
         toggleBtn.parentElement.classList.toggle("open");
-      }
+    
     });
   });
 }
