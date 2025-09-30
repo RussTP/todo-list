@@ -88,7 +88,7 @@ export class Display {
 
     console.log("displayProjects called with projects", projects);
     const content = document.querySelector("#project-container");
-    content.innerHTML = "<h1>Todo, maybe later</h1>";
+    content.innerHTML = ` <h1>To Doozy</h1>`;
 
     projects.forEach(project => {
        console.log("🔎 Rendering project", project.title, "with ID:", project.id);

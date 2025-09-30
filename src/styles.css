@@ -55,6 +55,7 @@ body {
 button {
     color: var(--text-color);
     background-color: var(--nav-background);
+    font-family: "geo-regular-webfont", sans-serif;
 }
 
 
@@ -73,6 +74,7 @@ button {
     align-items: center;
     height: 3rem;
     padding: 0.5rem 1rem;
+    font-size: 1rem;
     width: 100%;
     border: none;
     background-color: var(--nav-background);
@@ -322,14 +324,41 @@ height: 100vh;
     background-color: var(--nav-background);
     padding: 2rem;
     text-align: center;
+    justify-content: center;
+    align-items: center;
     gap: 0.6rem;
     border-radius: 10px;
-    box-shadow: 0 4px 12px var(--box-shadow);
-    max-width: 30rem;
+    box-shadow: 0 0 4px 2px var(--box-shadow);
+    max-width: 15rem;
     height: auto;
     width: 90%;
+    color: var(--text-color);
 }
 
+input[type="submit"], #cancelBtn {
+background-color: var(--text-color);
+color: var(--nav-background) ;
+padding: 5px;
+cursor: pointer;
+border-radius: 5px;
+width: 60%;
+text-align: center;
+}
+
+input {
+  border-radius: 5px;
+}
+
+input[type="submit"]:hover, #cancelBtn:hover {
+  background-color: var(--button-hover);
+  color: var(--text-color);
+} 
+
+input:focus {
+  background-color: var(--text-color);
+  box-shadow: 0 0 4px 2px var(--box-shadow);
+  border: 2px solid var(--text-color);
+}
 
 
 
@@ -343,7 +372,7 @@ height: 100vh;
     justify-content: flex-start;
     width: 100%;
     min-width: fit-content;
-    margin-top: 20px;
+    margin-top: 10px;
     height: 5rem;
     gap: 1rem;
 
@@ -566,11 +595,11 @@ height: 100vh;
   
     .sidenav.open {
         width: 250px;
+      
     }
 
-    .sidenav.open~.hamburger {
-        display: none;
-    }
+
+
 
       .sidenav a {
     padding: 8px 32px;
@@ -588,7 +617,7 @@ height: 100vh;
   .sidenav .closebtn {
     position: absolute;
     top: 0;
-    right: 15px;
+    right: -5px;
     font-size: 36px;
     cursor: pointer;
   }
@@ -603,6 +632,10 @@ height: 100vh;
 
 .button-container.open .caret-ham {
     transform: rotate(0deg);
+}
+
+#project-container {
+  margin-top: 40px;
 }
 
   .project-card {
