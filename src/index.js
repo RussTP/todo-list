@@ -9,10 +9,13 @@ const controller = new Controller(display, projectList);
 display.controller = controller;
 
 
-
-
 const addProjectBtn = document.querySelector("#add-project-btn");
 addProjectBtn.addEventListener("click", () => {
+    display.projectForm();
+})
+
+const addProjectBtnMobile = document.querySelector("#add-project-btn-mobile");
+addProjectBtnMobile.addEventListener("click", () => {
     display.projectForm();
 })
 
@@ -21,6 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
     display.displayProjectNav(projectList.projects);
     display.projectNavToggle();
     display.completeProjectNavToggle();
+    display.sideNavMobile();
+
+
 });
 
 

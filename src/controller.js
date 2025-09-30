@@ -96,7 +96,7 @@ export default class Controller {
   }
 
   toggleComplete(projectId, todoId) {
-    console.log("toggleComplete called for projectId:", projectId, "todoId", todoId);
+    console.log("toggle Complete called for projectId:", projectId, "todoId", todoId);
     const project = this.projectList.getProject(projectId);
     if (!project) {
       console.error("toggleComplete: project not found", projectId);

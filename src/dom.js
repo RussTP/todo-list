@@ -19,6 +19,30 @@ export class Display {
     container?.classList.toggle("show");
   }
 
+  
+  sideNavMobile(){
+
+  const navBurger = document.querySelector("#nav-burger");
+  const hamburger = document.querySelector(".hamburger");
+  const closeBtn = document.querySelector(".closebtn");
+
+
+  if (!navBurger || !hamburger || !closeBtn) return;
+
+
+  hamburger.addEventListener("click", () => {
+      console.log("☰ clicked");
+    navBurger.classList.add("open");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    console.log("× clicked");
+    navBurger.classList.remove("open");
+  });
+
+}
+
+
   projectForm() {
     console.log("projectForm called");
     const content = document.querySelector("#form-container");
@@ -76,12 +100,16 @@ export class Display {
       
       const buttonGroup = document.createElement("div");
       buttonGroup.classList.add("project-card-btn");
-      
       const collapseTodoBtn = document.createElement("button");
+      
       collapseTodoBtn.classList.add("collapse-btn");
+      const caret = document.createElement("span");
+      caret.classList.add("todo-caret");
+      collapseTodoBtn.appendChild(caret);
+
       collapseTodoBtn.addEventListener("click", () => {
         this.controller.collapseTodo(project.id)
-         collapseTodoBtn.classList.toggle("is-open");
+         caret.classList.toggle("is-open");
         });
       buttonGroup.appendChild(collapseTodoBtn);
 
@@ -139,47 +167,56 @@ export class Display {
         todoEl.appendChild(priorityIndicator);
 
         const textWrapper = document.createElement("div");
-
+        const titleLabel = document.createElement("b")
+        titleLabel.textContent ="Todo: ";
         const titleSpan = document.createElement("span");
         titleSpan.classList.add("todo-title");
         titleSpan.textContent = todo.title;
         if (todo.completed) {
           titleSpan.style.textDecoration = "line-through";
         }
-
+        textWrapper.appendChild(titleLabel);
         textWrapper.appendChild(titleSpan);
         textWrapper.append(" ");
 
+        const descLabel = document.createElement("b");
         const descSpan = document.createElement("span");
+        descLabel.textContent ="Description: ";
         descSpan.classList.add("todo-desc");
         descSpan.textContent = todo.description;
         if (todo.completed) {
           descSpan.style.textDecoration = "line-through";
         }
         
+        textWrapper.append(descLabel);
         textWrapper.appendChild(descSpan);
         textWrapper.append(" ");
 
+        const dueLabel = document.createElement("b");
         const dueSpan = document.createElement("span");
+        dueLabel.textContent ="Due: ";
         dueSpan.classList.add("todo-date");
         dueSpan.textContent = dueDateText;
         if (todo.completed) {
           dueSpan.style.textDecoration = "line-through";
         }
 
+        textWrapper.appendChild(dueLabel);
         textWrapper.appendChild(dueSpan);
         todoEl.appendChild(textWrapper);
 
         const toggleBtn = document.createElement("button");
-        toggleBtn.textContent = todo.completed ? "Undo" : "Complete";
-        toggleBtn.addEventListener("click", () => {
+        toggleBtn.classList.add("todo-toggle-btn");
+         if(todo.completed)toggleBtn.classList.add("todo-is-complete");
+          
+          toggleBtn.addEventListener("click", () => {
           this.controller.toggleComplete(project.id, todo.id);
       });
         todoEl.appendChild(toggleBtn);
 
 
         const editBtn = document.createElement("button");
-        editBtn.textContent = "Edit";
+        editBtn.classList.add("todo-edit-btn");
         editBtn.addEventListener("click", () => {
          const overlay = document.createElement("div");
   overlay.classList.add("overlay");
@@ -239,7 +276,7 @@ export class Display {
 
 
         const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Delete";
+        deleteBtn.classList.add("todo-delete-btn");
         deleteBtn.addEventListener("click", () => {
           this.controller.removeTodo(project.id, todo.id); 
           });
@@ -275,19 +312,23 @@ projects.forEach(project => {
 
 
 projectNavToggle() {
-  const toggleBtn = document.querySelector("#my-projects-btn");
-    console.log("toggleBtn found:", toggleBtn);
-  if(!toggleBtn) return;
+  const toggleBtns = document.querySelectorAll("#my-projects-btn, #my-projects-btn-mobile");
+    console.log("toggleBtn found:", toggleBtns);
+  if(!toggleBtns.length) return;
 
+  toggleBtns.forEach(toggleBtn => {
   toggleBtn.addEventListener("click", () => {
-    console.log("my-projects-btn clicked");
+   console.log(`${toggleBtn.id} clicked`);
+
     const projectListEl = document.querySelector("#project-list");
     if (projectListEl) {
     projectListEl.classList.toggle("show");
      toggleBtn.parentElement.classList.toggle("open");
-    } 
+     } 
+    });
   });
 }
+
 
 displayCompleteProjectNav(projects) {
   const projectListEl = document.querySelector("#complete-project-list");
@@ -309,10 +350,11 @@ displayCompleteProjectNav(projects) {
 }
 
 completeProjectNavToggle() {
-  const toggleBtn = document.querySelector("#complete-projects-btn");
-    console.log("toggleBtn project complete found:", toggleBtn);
-    if(!toggleBtn) return;
+  const toggleBtns = document.querySelectorAll("#complete-projects-btn, #complete-projects-btn-mobile");
+    console.log("toggleBtn project complete found:", toggleBtns);
+    if(!toggleBtns) return;
 
+    toggleBtns.forEach(toggleBtn => {
     toggleBtn.addEventListener("click", () => {
       console.log("complete-projects-btn clicked");
       const projectListEl = document.querySelector("#complete-project-list");
@@ -321,6 +363,7 @@ completeProjectNavToggle() {
         toggleBtn.parentElement.classList.toggle("open");
       }
     });
+  });
 }
 
 

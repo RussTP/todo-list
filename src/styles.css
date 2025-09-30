@@ -7,7 +7,7 @@
 :root {
     --content-background: #050a30;
     --nav-background: #000c66;
-    --button-hover: #0000ff;
+    --button-hover: #6868e462;
     --text-color: #7ec8e3;
     --box-shadow:#7ec8e388;
 }
@@ -115,22 +115,37 @@ background-color: var(--nav-background);
 color: var(--text-color);
 }
 
-.collapse-btn  {
-    background-image: url('data:image/svg+xml,<svg fill="%2343d17a" width="32px" height="64px" viewBox="0 0 1920.00 1920.00" xmlns="http://www.w3.org/2000/svg" stroke="%2343d17a" stroke-width="36.480000000000004"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="%23CCCCCC" stroke-width="3.84"></g><g id="SVGRepo_iconCarrier"><path d="M1920 1694v112.941H0V1694h1920ZM1016.47 338.882v654.269l242.372-242.485 79.963 79.85L960 1209.32 581.195 830.515l79.963-79.85 242.371 242.486V338.882h112.942ZM1750.589 113H169.412C76.009 113 0 189.01 0 282.412v1185.882h1920V282.412C1920 189.009 1843.99 113 1750.588 113Z" fill-rule="evenodd"></path></g></svg>');
-   background-repeat: no-repeat;
-  background-position: center;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.5s ease;
+.project-card-btn button:hover {
+    background-color: var(--button-hover);
 }
 
-.collapse-btn.is-open {
-    background-image: url('data:image/svg+xml,<svg fill="%23ff6666" width="32px" height="64px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)" stroke="%23ff6666" stroke-width="0.019200000000000002"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M1920 1694v112.941H0V1694h1920ZM1016.47 338.882v654.269l242.372-242.485 79.963 79.85L960 1209.32 581.195 830.515l79.963-79.85 242.371 242.486V338.882h112.942ZM1750.589 113H169.412C76.009 113 0 189.01 0 282.412v1185.882h1920V282.412C1920 189.009 1843.99 113 1750.588 113Z" fill-rule="evenodd"></path></g></svg>');
-   background-repeat: no-repeat;
-  background-position: center;
+.collapse-btn  {
+   width: 32px;
+   height: 32px;
+   border: none;
+   background-color: var(--nav-background);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   cursor: pointer;
+   position: relative;
+    
+}
+
+.todo-caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 14px solid var(--text-color);
+    transition: transform 0.3s ease; 
+    transform: rotate(-90deg);
+}
+
+.todo-caret.is-open {
     cursor: pointer;
-    transition: all 0.5s ease;
-     position: relative;
+  transform: rotate(0deg);
 }
 
 .add-todo-btn {
@@ -142,30 +157,64 @@ color: var(--text-color);
 }
 
 .remove-project-btn {
-    background-image: url('data:image/svg+xml,<svg width="64px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17 12C17 11.4477 16.5523 11 16 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44771 13 8 13H16C16.5523 13 17 12.5523 17 12Z" fill="%23ff6666"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM12 20.9932C7.03321 20.9932 3.00683 16.9668 3.00683 12C3.00683 7.03321 7.03321 3.00683 12 3.00683C16.9668 3.00683 20.9932 7.03321 20.9932 12C20.9932 16.9668 16.9668 20.9932 12 20.9932Z" fill="%23ff6666"></path></g></svg>');
+    background-image:url('data:image/svg+xml,<svg width="32px" height="64px" viewBox="0 0 950 950" fill="%23ff6666" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="%23ff6666" stroke-width="31.744"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M512 897.6c-108 0-209.6-42.4-285.6-118.4-76-76-118.4-177.6-118.4-285.6 0-108 42.4-209.6 118.4-285.6 76-76 177.6-118.4 285.6-118.4 108 0 209.6 42.4 285.6 118.4 157.6 157.6 157.6 413.6 0 571.2-76 76-177.6 118.4-285.6 118.4z m0-760c-95.2 0-184.8 36.8-252 104-67.2 67.2-104 156.8-104 252s36.8 184.8 104 252c67.2 67.2 156.8 104 252 104 95.2 0 184.8-36.8 252-104 139.2-139.2 139.2-364.8 0-504-67.2-67.2-156.8-104-252-104z" fill=""></path><path d="M707.872 329.392L348.096 689.16l-31.68-31.68 359.776-359.768z" fill=""></path><path d="M328 340.8l32-31.2 348 348-32 32z" fill=""></path></g></svg>');
    background-repeat: no-repeat;
      background-position: center;
-
     cursor: pointer;
      position: relative;
 }
 
 .project-complete-btn {
- background-repeat: no-repeat;
-     background-position: center;
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
-     position: relative;
-  background-image: url('data:image/svg+xml,<svg width="32px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="%23ff6666" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>');
+    position: relative;
+    background-image: url('data:image/svg+xml,<svg width="32px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="%23ff6666" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>');
 }
 
 .project-complete-btn.is-complete {
     background-repeat: no-repeat;
-     background-position: center;
+    background-position: center;
     cursor: pointer;
-     position: relative;
-  background-image: url('data:image/svg+xml,<svg fill="%2343d17a" width="32px" height="64px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" stroke="%2343d17a" stroke-width="0.728"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M 27.9999 51.9063 C 41.0546 51.9063 51.9063 41.0781 51.9063 28 C 51.9063 14.9453 41.0312 4.0937 27.9765 4.0937 C 14.8983 4.0937 4.0937 14.9453 4.0937 28 C 4.0937 41.0781 14.9218 51.9063 27.9999 51.9063 Z M 27.9999 47.9219 C 16.9374 47.9219 8.1014 39.0625 8.1014 28 C 8.1014 16.9609 16.9140 8.0781 27.9765 8.0781 C 39.0155 8.0781 47.8983 16.9609 47.9219 28 C 47.9454 39.0625 39.0390 47.9219 27.9999 47.9219 Z M 25.0468 39.7188 C 25.8202 39.7188 26.4530 39.3437 26.9452 38.6172 L 38.5234 20.4063 C 38.8046 19.9375 39.0858 19.3984 39.0858 18.8828 C 39.0858 17.8047 38.1483 17.1484 37.1640 17.1484 C 36.5312 17.1484 35.9452 17.5 35.5234 18.2031 L 24.9296 35.1484 L 19.4921 28.1172 C 18.9765 27.4141 18.4140 27.1563 17.7812 27.1563 C 16.7499 27.1563 15.9296 28 15.9296 29.0547 C 15.9296 29.5703 16.1405 30.0625 16.4687 30.5078 L 23.0312 38.6172 C 23.6640 39.3906 24.2733 39.7188 25.0468 39.7188 Z"></path></g></svg>');
+    position: relative;
+    background-image: url('data:image/svg+xml,<svg fill="%2343d17a" width="32px" height="64px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" stroke="%2343d17a" stroke-width="0.728"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M 27.9999 51.9063 C 41.0546 51.9063 51.9063 41.0781 51.9063 28 C 51.9063 14.9453 41.0312 4.0937 27.9765 4.0937 C 14.8983 4.0937 4.0937 14.9453 4.0937 28 C 4.0937 41.0781 14.9218 51.9063 27.9999 51.9063 Z M 27.9999 47.9219 C 16.9374 47.9219 8.1014 39.0625 8.1014 28 C 8.1014 16.9609 16.9140 8.0781 27.9765 8.0781 C 39.0155 8.0781 47.8983 16.9609 47.9219 28 C 47.9454 39.0625 39.0390 47.9219 27.9999 47.9219 Z M 25.0468 39.7188 C 25.8202 39.7188 26.4530 39.3437 26.9452 38.6172 L 38.5234 20.4063 C 38.8046 19.9375 39.0858 19.3984 39.0858 18.8828 C 39.0858 17.8047 38.1483 17.1484 37.1640 17.1484 C 36.5312 17.1484 35.9452 17.5 35.5234 18.2031 L 24.9296 35.1484 L 19.4921 28.1172 C 18.9765 27.4141 18.4140 27.1563 17.7812 27.1563 C 16.7499 27.1563 15.9296 28 15.9296 29.0547 C 15.9296 29.5703 16.1405 30.0625 16.4687 30.5078 L 23.0312 38.6172 C 23.6640 39.3906 24.2733 39.7188 25.0468 39.7188 Z"></path></g></svg>');
 
 }
+
+
+/* Todo buttons */
+
+.todo-toggle-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: center / 70% no-repeat transparent;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjN2VjOGUzIiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwYXRoIGQ9Ik0xNy41IDkuNUgxMGMtMiAwLTMuNSAxLjUtMy41IDMuNXMxLjUgMy41IDMuNSAzLjVIMTQuNSIvPjxwYXRoIGQ9Ik0xNy41IDkuNUwxNS4yNSA3LjVNMTcuNSA5LjVM MTUuMjUgMTEuNSIvPjwvc3ZnPg==");
+}
+
+
+
+.todo-edit-btn {
+     background: center / 70% no-repeat transparent;
+     width: 32px;
+     height: 32px;
+     border: none;
+    cursor: pointer;
+    position: relative;
+    background-image:url('data:image/svg+xml,<svg width="113px" height="113px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="%23f9dd90" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="%23f9dd90" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>');
+}
+
+.todo-delete-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: center / 70% no-repeat transparent;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmY2NjY2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTUgOWwtNiA2TTkgOWw2IDYiLz48L3N2Zz4=");
+}
+
+
 
 
 
@@ -315,6 +364,7 @@ height: 100vh;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    flex: 1;
     gap: 1rem;
     padding: 1rem;
     height: auto;
@@ -325,6 +375,15 @@ height: 100vh;
     color: var(--text-color);
     transform: perspective(1000px) rotateX(0) rotateY(0) translateZ(0);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.todo button {
+    align-self: center;
+    flex-shrink: 0;
+    height: 2rem;
+    width: 2rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
 }
 
 .todo .todo-text {
@@ -396,3 +455,85 @@ height: 100vh;
 
 }
 
+.sidenav, .hamburger {
+    width: 0;
+}
+
+
+/* Media  query cellphone */
+
+@media screen and (max-width: 600px) {
+    nav{
+        display: none;
+    }
+
+      .hamburger {
+    display: block;
+    font-size: 30px;
+    padding: 10px;
+    cursor: pointer;
+    color: var(--text-color);
+    z-index: 9; 
+    position: fixed;
+    top: 10px;
+    left: 10px;
+  }
+
+  .sidenav {
+    background-color: var(--nav-background);
+    overflow-x: hidden;
+    height: 100%;
+    width: 0; 
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    transition: width 0.5s ease;
+    padding-top: 60px;
+  }
+  
+    .sidenav.open {
+        width: 250px;
+    }
+
+    .sidenav.open~.hamburger {
+        display: none;
+    }
+
+      .sidenav a {
+    padding: 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: var(--text-color);
+    display: block;
+    transition: 0.5s ease;
+  }
+
+  .sidenav a:hover {
+    background-color: var(--button-hover);
+  }
+
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 15px;
+    font-size: 36px;
+    cursor: pointer;
+  }
+
+  .caret-ham {
+    transition: transform 0.3s ease; 
+    transform: rotate(-90deg);
+    height: 24px;
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.button-container.open .caret-ham {
+    transform: rotate(0deg);
+}
+
+
+
+    
+}
