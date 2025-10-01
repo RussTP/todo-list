@@ -94,7 +94,8 @@ addProject() {
       };
 
     const content = document.querySelector("#project-container");
-    content.innerHTML = ` <h1>ToDoozy</h1>`;
+    content.innerHTML = `<div class="project-title"><h1>ToDoozy</h1></div> <div class="project-title"><h2>My Projects</h2>`;
+  
 
     projects.forEach(project => {
       const projectCard = document.createElement("div");

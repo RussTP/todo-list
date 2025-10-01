@@ -21,6 +21,12 @@
 
 }
 
+.project-title {
+  width: 100%;
+  text-align: center;
+  margin: 1rem 0;
+}
+
 
 p, h1, h2 {
     color: var(--text-color);
@@ -373,7 +379,7 @@ input:focus, select:focus {
 
 
 
-#project-container, h1 {
+#project-container {
     display: flex;
     flex-wrap: wrap;
     flex-shrink: 1;
@@ -382,8 +388,7 @@ input:focus, select:focus {
     justify-content: flex-start;
     width: 100%;
     min-width: fit-content;
-    margin-top: 10px;
-    height: 5rem;
+    height: 1rem;
     gap: 1rem;
 
 }
@@ -631,9 +636,8 @@ input:focus, select:focus {
     transform: rotate(0deg);
 }
 
-#project-container {
-  margin-top: 40px;
-}
+
+
 
   .project-card {
     flex: 1 1 100%;     
