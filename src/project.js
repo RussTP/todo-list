@@ -4,7 +4,7 @@ export default class Project {
     this.title = title;
     this.todos = [];
     this.completed = completed;
-    console.log("New project created:", this.title, "with ID:", this.id);
+
   }
 
   addTodo(todo) {

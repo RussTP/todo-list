@@ -31,12 +31,10 @@ export class Display {
 
 
   hamburger.addEventListener("click", () => {
-      console.log("☰ clicked");
     navBurger.classList.add("open");
   });
 
   closeBtn.addEventListener("click", () => {
-    console.log("× clicked");
     navBurger.classList.remove("open");
   });
 
@@ -57,9 +55,7 @@ addProject() {
 
 
   projectForm() {
-    console.log("projectForm called");
     const content = document.querySelector("#form-container");
-    console.log("form container element:", content);
     
     const overlay = document.createElement("div");
     overlay.classList.add("overlay");
@@ -76,7 +72,6 @@ addProject() {
     overlay.style.display = "flex";
 
     overlay.querySelector("#cancelBtn").addEventListener("click", () => overlay.remove());
-    console.log("Project form cancelled");
     overlay.addEventListener("click", event => { if(event.target === overlay) overlay.remove(); 
 
     });
@@ -85,7 +80,6 @@ addProject() {
     form.addEventListener("submit", e => {
       e.preventDefault();
       const title = form.querySelector("#title").value;
-      console.log("Form submitted, title:", title);
       this.controller.createProject(title);
       overlay.remove();
     });
@@ -99,12 +93,10 @@ addProject() {
         high: "priority-high"
       };
 
-    console.log("displayProjects called with projects", projects);
     const content = document.querySelector("#project-container");
-    content.innerHTML = ` <h1>To Doozy</h1>`;
+    content.innerHTML = ` <h1>ToDoozy</h1>`;
 
     projects.forEach(project => {
-       console.log("🔎 Rendering project", project.title, "with ID:", project.id);
       const projectCard = document.createElement("div");
       projectCard.classList.add("project-card");
       projectCard.id = `project-${project.id}`;
@@ -132,7 +124,6 @@ addProject() {
         this.controller.todoForm(project.id)
           
       });
-      console.log("Add todo clicked for projects:", project.id);
       buttonGroup.appendChild(addTodoBtn);
 
 
@@ -151,7 +142,6 @@ addProject() {
       const removeProjectBtn = document.createElement("button");
       removeProjectBtn.classList.add("remove-project-btn");
       removeProjectBtn.addEventListener("click", () => this.controller.removeProject(project.id)); 
-      console.log("Remove project clicked", project.id);
       buttonGroup.appendChild(removeProjectBtn);
        projectCard.appendChild(buttonGroup);
 
@@ -163,7 +153,6 @@ addProject() {
      
 
       project.todos.forEach(todo => {
-      console.log("   ↳ Rendering todo:", todo.title, "ID:", todo.id);
         const todoEl = document.createElement("div");
         todoEl.classList.add("todo");
 
@@ -172,8 +161,7 @@ addProject() {
         let dueDateText = todo.date instanceof Date && isValid(todo.date)
           ? format(todo.date, "MM/dd/yyyy")
           : "No date set";
-          console.log("todo.date type:", typeof todo.date, todo.date);
-          console.log("is instance of Date:", todo.date instanceof Date);
+
 
   
 
@@ -344,12 +332,10 @@ projects.forEach(project => {
 
 projectNavToggle() {
   const toggleBtns = document.querySelectorAll("#my-projects-btn, #my-projects-btn-mobile");
-    console.log("toggleBtn found:", toggleBtns);
   if(!toggleBtns.length) return;
 
   toggleBtns.forEach(toggleBtn => {
   toggleBtn.addEventListener("click", () => {
-   console.log(`${toggleBtn.id} clicked`);
 
     const projectListEls = document.querySelectorAll("#project-list, #project-list-mobile");
     if (!projectListEls.length) return; {
@@ -392,12 +378,10 @@ displayCompleteProjectNav(projects) {
 
 completeProjectNavToggle() {
   const toggleBtns = document.querySelectorAll("#complete-projects-btn, #complete-projects-btn-mobile");
-    console.log("toggleBtn project complete found:", toggleBtns);
     if(toggleBtns.length === 0) return;
 
     toggleBtns.forEach(toggleBtn => {
     toggleBtn.addEventListener("click", () => {
-      console.log("complete-projects-btn clicked");
       const projectListEls = document.querySelectorAll("#complete-project-list, #complete-project-list-mobile");
       if (projectListEls.length === 0) return; 
         projectListEls.forEach(projectListEl => {
@@ -412,7 +396,6 @@ completeProjectNavToggle() {
 
 
   todoForm(projectId) {
-    console.log("todoForm called for projectId:", projectId);
     const projectCard = document.querySelector(`#project-${projectId}`);
     const overlay = document.createElement("div");
     overlay.classList.add("overlay");
@@ -459,7 +442,6 @@ completeProjectNavToggle() {
         date: dateValue || null
       });
 
-      console.log("Todo form submitted:", todoName, priority, dateValue);
       overlay.remove();
     });
   }

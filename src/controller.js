@@ -2,16 +2,20 @@
 import Project from "./project.js";
 import Todo from "./todo.js";
 import ProjectList from "./projectList.js";
+import Storage from "./storage.js";
+import { saveProjects, loadProjects } from "./storage.js";
 
 export default class Controller {
   constructor(display, projectList = null) {
     this.display = display;
     this.projectList = projectList || new ProjectList();
+    
+   const savedProjects = loadProjects();
+    if (savedProjects.length) {
+      this.projectList.projects = savedProjects;
+    }
 
     if (this.display) this.display.controller = this;
-
-    console.log("Controller initialized. Projects:", this.projectList.projects.map(p => ({ id: p.id, title: p.title })));
-
    
     if (this.display && typeof this.display.displayProjects === "function") {
       this.display.displayProjects(this.projectList.projects);
@@ -25,10 +29,9 @@ export default class Controller {
   }
 
   createProject(title) {
-    console.log("createProject called with title:", title);
     const project = new Project(title);
     this.projectList.addProject(project);
-    console.log("Project created ->", project.id, project.title);
+    saveProjects(this.projectList.projects)
     this.display.displayProjects(this.projectList.projects);
     if (typeof this.display.displayProjectNav === "function") {
       this.display.displayProjectNav(this.projectList.projects);
@@ -36,58 +39,43 @@ export default class Controller {
   }
 
   addTodo(projectId, todoData) {
-    console.log("addTodo called for projectId:", projectId, "with data:", todoData);
     const project = this.projectList.getProject(projectId);
-    if (!project) {
-      console.error("addTodo: Project not found for id:", projectId, "current IDs:", this.projectList.projects.map(p => p.id));
-      return;
-    }
+    if (!project) return;
+  
 
     const date = todoData.date ? new Date(todoData.date) : null;
     const todo = new Todo(todoData.title, todoData.description || "", todoData.priority, false, date);
     project.addTodo(todo);
-    console.log("Todo added:", todo.id, "to project:", project.id);
     this.display.displayProjects(this.projectList.projects);
+    saveProjects(this.projectList.projects)
   }
 
   removeTodo(projectId, todoId) {
-    console.log("removeTodo called with:", { projectId, todoId });
     const project = this.projectList.getProject(projectId);
-    if (!project) {
-      console.error("removeTodo: Project not found for id:", projectId, "projects:", this.projectList.projects.map(p => p.id));
-      return;
-    }
+    if (!project) return;
     const normalizedTodoId = String(todoId);
     const idx = project.todos.findIndex(t => String(t.id) === normalizedTodoId);
-    if (idx === -1) {
-      console.error("removeTodo: Todo not found:", todoId, "in project:", project.id, "todoIDs:", project.todos.map(t => t.id));
-      return;
-    }
+    if (idx === -1) return;
     project.todos.splice(idx, 1);
-    console.log("Todo removed. Project todos now:", project.todos.map(t => t.id));
     this.display.displayProjects(this.projectList.projects);
+    saveProjects(this.projectList.projects)
   }
 
 
       editTodo(projectId, todoId, updates) {
-      console.log("editTodo called with:", {projectId, todoId});
       const project = this.projectList.getProject(projectId);
       if (!project) {
-        console.error("editTodo: Project not found for id:", projectId);
         return;
       }
       
       const todo = project.todos.find(t => String(t.id) === String(todoId));
-      if (!todo) {
-        console.error("editTodo not found", todoId);
-        return
-      }
+      if (!todo) return;
       if (updates.title !== undefined) todo.title = updates.title;
       if (updates.description !== undefined)todo.description = updates.description;
       if (updates.priority !== undefined)todo.priority = updates.priority;
       if (updates.date !== undefined)todo.date = updates.date;
-      console.log("todo update:", todo);
       this.display.displayProjects(this.projectList.projects);
+      saveProjects(this.projectList.projects)
       
     }
 
@@ -96,42 +84,31 @@ export default class Controller {
   }
 
   toggleComplete(projectId, todoId) {
-    console.log("toggle Complete called for projectId:", projectId, "todoId", todoId);
     const project = this.projectList.getProject(projectId);
-    if (!project) {
-      console.error("toggleComplete: project not found", projectId);
-      return;
-    }
+    if (!project) return;
+    
 
     const todo = project.todos.find(t => String(t.id) === String(todoId));
-    if (!todo) {
-      console.error("toggleComplete: todo not found", todoId, "in project", project.id);
-      return;
-    }
+    if (!todo) return;
+  
 
     if (typeof todo.toggleComplete === "function") {
       todo.toggleComplete();
     } else {
       todo.completed = !todo.completed;
     }
-
-    console.log("Todo after toggle:", todo);
     this.display.displayProjects(this.projectList.projects);
   }
 
     toggleProjectComplete(projectId) {
-    console.log("toggle Project Complete projectId:", projectId);
     const project = this.projectList.getProject(projectId);
-    if (!project) {
-      console.error("project complete: project not found", projectId);
-      return;
-    }
+    if (!project) return;
     if (typeof project.toggleProjectComplete === "function") {
       project.toggleProjectComplete();
+      saveProjects(this.projectList.projects)
     }else {
       project.completed = !project.completed;
     }
-    console.log("project completed:", project);
     this.display.displayProjects(this.projectList.projects);
     this.display.displayCompleteProjectNav(this.projectList.projects);
     
@@ -142,16 +119,18 @@ export default class Controller {
   }
 
   removeProject(projectId) {
-    console.log("remove project called from projectId:", projectId);
     this.projectList.removeProject(projectId);
-    console.log("Projects after removal:", this.projectList.projects.map(p => p.id));
     this.display.displayProjects(this.projectList.projects);
     if (typeof this.display.displayProjectNav === "function") {
       this.display.displayProjectNav(this.projectList.projects);
+      saveProjects(this.projectList.projects)
     
     if (typeof this.display.displayCompleteProjectNav ==="function") {
       this.display.displayCompleteProjectNav(this.projectList.projects);
+      saveProjects(this.projectList.projects)
       }
   }
 }
+
+
 };

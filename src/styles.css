@@ -422,13 +422,12 @@ input:focus, select:focus {
 
 .todo {
   display: flex;
-  flex-direction: column;   /* stack text above buttons */
+  flex-direction: column;   
   justify-content: flex-start;
   align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem;
   margin-bottom: 1rem;
-
   width: 100%;
   border: 1px solid var(--box-shadow);
   box-shadow: 2px 2px 5px var(--box-shadow);
@@ -439,14 +438,11 @@ input:focus, select:focus {
 }
 
 .todo:hover {
-  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(10px);
+  transform: perspective(1200px) rotateX(-5deg) rotateY(5deg) translateZ(30px);
   box-shadow: 0 6px 17px #7ec8e371;
+  overflow: hidden;
 }
 
-.todo:active {
-  transform: scale(0.98);
-  box-shadow: 0 4px 10px #7ec8e341;
-}
 
 
 .todo-text {
@@ -454,7 +450,7 @@ input:focus, select:focus {
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.25rem;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
 }
 
 
@@ -498,16 +494,7 @@ input:focus, select:focus {
     margin-right: 0.5em;
 }
 
-.todo:hover {
-  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(10px);
-  box-shadow: 0 6px 17px #7ec8e371;
-    
-}
 
-.todo:active {
-  transform: perspective(1000px) rotateX(0) rotateY(0) translateZ(4px) scale(0.97);
-  box-shadow: 0 4px 10px #7ec8e341;
-}
 
 .completed {
   text-decoration-line: line-through; 
