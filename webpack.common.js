@@ -16,27 +16,29 @@
        title: 'Production',
        template: "./src/template.html",
      }),
-     new FaviconsWebpackPlugin({
-    logo: "./src/favicon/favicon.png", 
-    cache: true,
-    inject: true,
-    prefix: "assets/", 
-    favicons: {
-      appName: "Todo List",
-      appDescription: "ToDoozle To do list app",
-      developerName: "RussTP",
-      developerURL: null,
-      background: "#000c66",
-      theme_color: "#7ec8e3",
-      icons: {
-        favicons: true,
-        appleIcon: true,
-        android: true,
-        windows: true,
-        yandex: false
-      }
+    new FaviconsWebpackPlugin({
+  logo: "./src/favicon/favicon.png",
+  cache: true,
+  inject: true,
+  prefix: "assets/",
+  favicons: {
+    appName: "ToDoozy",
+    appShortName: "ToDoozy",
+    appDescription: "To-do list app",
+    background: "#000c66",
+    theme_color: "#7ec8e3",
+    start_url: "/todo-list/?homescreen=1",
+    display: "standalone",
+    orientation: "portrait",
+    icons: {
+      favicons: true,
+      appleIcon: true,
+      android: true,
+      windows: true,
+      yandex: false
     }
-  })
+  }
+})
 ],
 
   module: {

@@ -1,12 +1,12 @@
 {
-  "name": "Todo List",
-  "short_name": "Todo List",
-  "description": "ToDoozle To do list app",
+  "name": "ToDoozy",
+  "short_name": "ToDoozy",
+  "description": "To-do list app",
   "dir": "auto",
   "lang": "en-US",
   "display": "standalone",
-  "orientation": "any",
-  "start_url": "/?homescreen=1",
+  "orientation": "portrait",
+  "start_url": "/todo-list/?homescreen=1",
   "background_color": "#000c66",
   "theme_color": "#7ec8e3",
   "icons": [
