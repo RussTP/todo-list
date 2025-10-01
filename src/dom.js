@@ -100,6 +100,7 @@ addProject() {
     projects.forEach(project => {
       const projectCard = document.createElement("div");
       projectCard.classList.add("project-card");
+      projectCard.dataset.projectId = project.id;
       projectCard.id = `project-${project.id}`;
       projectCard.innerHTML = `<h2>${project.title}</h2>`;
 
@@ -302,16 +303,16 @@ addProject() {
   }
 
 
-  displayProjectNav(projects) {
-    const projectListEls = document.querySelectorAll("#project-list, #project-list-mobile");
-    if(!projectListEls.length) return;
-    
-    projectListEls.forEach(projectListEl => {
-projectListEl.innerHTML = "";
+displayProjectNav(projects) {
+  const projectListEls = document.querySelectorAll("#project-list, #project-list-mobile");
+  if (!projectListEls.length) return;
 
-projects.forEach(project => {
+  projectListEls.forEach(projectListEl => {
+    projectListEl.innerHTML = "";
+
+    projects.forEach(project => {
       const item = document.createElement("div");
-      item.classList.add("my-project");
+      item.classList.add("my-project"); // sidenav item
       item.textContent = project.title;
       item.dataset.projectId = project.id;
 
@@ -319,16 +320,33 @@ projects.forEach(project => {
         this.controller.collapseTodo(project.id);
 
         const navBurger = document.querySelector("#nav-burger");
-         if(navBurger && navBurger.classList.contains("open")) {
+        if (navBurger && navBurger.classList.contains("open")) {
           navBurger.classList.remove("open");
-         }
-      
+        }
+
+        const projectCard = document.querySelector(
+          `.project-card[data-project-id="${project.id}"]`
+        );
+
+        if (projectCard) {
+          const caret = projectCard.querySelector(".todo-caret");
+          const todosContainer = projectCard.querySelector(".todos-container");
+
+          if (caret && todosContainer) {
+            if (todosContainer.classList.contains("show")) {
+              caret.classList.add("is-open");
+            } else {
+              caret.classList.remove("is-open");
+            }
+          }
+        }
       });
-   
-        projectListEl.appendChild(item);
-      });
+
+      projectListEl.appendChild(item);
     });
+  });
 }
+
 
 
 projectNavToggle() {
@@ -353,29 +371,60 @@ projectNavToggle() {
 
 
 displayCompleteProjectNav(projects) {
-  const projectListEls = document.querySelectorAll("#complete-project-list, #complete-project-list-mobile");
+  const projectListEls = document.querySelectorAll(
+    "#complete-project-list, #complete-project-list-mobile"
+  );
   if (!projectListEls.length) return;
+
   projectListEls.forEach(projectListEl => {
-  projectListEl.innerHTML = "";
-  
-  projects
-  .filter(p => p.completed)
-  .forEach(project => {
-    const item = document.createElement("div");
-    item.classList.add("my-project");
-    item.textContent = project.title;
-    item.dataset.projectId = project.id;
-    item.addEventListener("click", () => {
-      this.controller.collapseTodo(project.id);
-      const navBurger = document.querySelector("#nav-burger");
-      if(navBurger && navBurger.classList.contains("open")) {
-      navBurger.classList.remove("open");
-         }
-  });
-    projectListEl.appendChild(item);
-    });
+    projectListEl.innerHTML = "";
+
+    projects
+      .filter(p => p.completed)
+      .forEach(project => {
+        const item = document.createElement("div");
+        item.classList.add("my-project");
+        item.textContent = project.title;
+        item.dataset.projectId = project.id;
+
+        item.addEventListener("click", () => {
+           console.log("Clicked project in sidenav:", project.id, project.title);
+          this.controller.collapseTodo(project.id);
+
+      
+          const navBurger = document.querySelector("#nav-burger");
+          if (navBurger && navBurger.classList.contains("open")) {
+             console.log("Closing mobile sidenav");
+            navBurger.classList.remove("open");
+          }
+
+         
+          const projectCard = document.querySelector(
+            `.project-card[data-project-id="${project.id}"]` 
+          );
+          console.log("Found projectCard:", projectCard);
+
+          if (projectCard) {
+            const caret = projectCard.querySelector(".todo-caret");
+            const todosContainer = projectCard.querySelector(".todos-container");
+
+                console.log("Caret:", caret, "Todos container:", todosContainer);
+
+            if (caret && todosContainer) {
+              if (todosContainer.classList.contains("show")) {
+                caret.classList.add("is-open");
+              } else {
+                caret.classList.remove("is-open");
+              }
+            }
+          }
+        });
+
+        projectListEl.appendChild(item);
+      });
   });
 }
+
 
 completeProjectNavToggle() {
   const toggleBtns = document.querySelectorAll("#complete-projects-btn, #complete-projects-btn-mobile");
