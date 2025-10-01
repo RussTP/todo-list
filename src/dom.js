@@ -42,6 +42,19 @@ export class Display {
 
 }
 
+addProject() {
+  const buttons = document.querySelectorAll("#add-project-btn, #add-project-btn-mobile");
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+       const navBurger = document.querySelector("#nav-burger");
+      if (btn.id === "add-project-btn-mobile" && navBurger?.classList.contains("open")) {
+        navBurger.classList.remove("open");
+      }
+      this.projectForm();
+    });
+  });
+}
+
 
   projectForm() {
     console.log("projectForm called");
@@ -315,6 +328,11 @@ projects.forEach(project => {
 
       item.addEventListener("click", () => {
         this.controller.collapseTodo(project.id);
+
+        const navBurger = document.querySelector("#nav-burger");
+         if(navBurger && navBurger.classList.contains("open")) {
+          navBurger.classList.remove("open");
+         }
       
       });
    
@@ -362,6 +380,10 @@ displayCompleteProjectNav(projects) {
     item.dataset.projectId = project.id;
     item.addEventListener("click", () => {
       this.controller.collapseTodo(project.id);
+      const navBurger = document.querySelector("#nav-burger");
+      if(navBurger && navBurger.classList.contains("open")) {
+      navBurger.classList.remove("open");
+         }
   });
     projectListEl.appendChild(item);
     });

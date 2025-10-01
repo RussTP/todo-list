@@ -347,14 +347,24 @@ text-align: center;
 
 input {
   border-radius: 5px;
+  height: 2rem;
+  width: 11rem;
 }
+
+select {
+  border-radius: 5px;
+  height: 2rem;
+  width: 11rem;
+  cursor: pointer;
+}
+
 
 input[type="submit"]:hover, #cancelBtn:hover {
   background-color: var(--button-hover);
   color: var(--text-color);
 } 
 
-input:focus {
+input:focus, select:focus {
   background-color: var(--text-color);
   box-shadow: 0 0 4px 2px var(--box-shadow);
   border: 2px solid var(--text-color);

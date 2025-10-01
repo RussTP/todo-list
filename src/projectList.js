@@ -11,7 +11,7 @@ export default class ProjectList {
     codeProject.addTodo(new Todo("code logic", "make working game logic using factories and module patterns ", "medium", true, "2025-07-26"));
     codeProject.addTodo(new Todo("create dom", "incorporate DOM with game logic", "medium", true, "2025-07-27"));
     codeProject.addTodo(new Todo("finish project", "clean up code, and style of project", "low", true, "2025-07-28"));
-     this.projects.push(codeProject);
+    this.projects.push(codeProject);
 
     const defaultProject = new Project("Personal",  false);
     defaultProject.addTodo(new Todo("Groceries", "apples, milk, eggs, cheese", "high", false, "2025-09-20"));
@@ -19,7 +19,16 @@ export default class ProjectList {
     defaultProject.addTodo(new Todo("Vacuum", "vacuum main floor", "low", false, "2025-09-27"));
     this.projects.push(defaultProject);
 
+    const workProject = new Project("Meetings", false);
+    workProject.addTodo(new Todo("Q&A meeting", "quality and assurance meeting, for to do list project", "high", false, "2025-10-20"));
+    workProject.addTodo(new Todo("Consultation", "customer consultation for business web-app design", "high", false, "2025-10-15"));
+    workProject.addTodo(new Todo("Team meet", "software devs and ux/ui meeting for project collaboration", "medium", false, "2025-10-12"));
+    this.projects.push(workProject);
+
     }
+    
+
+
     addProject(project) {
         if(project instanceof Project) {
             this.projects.push(project)
