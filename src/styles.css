@@ -352,13 +352,17 @@ text-align: center;
 input {
   border-radius: 5px;
   height: 2rem;
-  width: 11rem;
+  width: 13rem;
+}
+
+#description {
+  height: 6rem;
 }
 
 select {
   border-radius: 5px;
   height: 2rem;
-  width: 11rem;
+  width: 13rem;
   cursor: pointer;
 }
 
@@ -675,7 +679,7 @@ input:focus, select:focus {
 @media(hover:none) {
 .todo:hover {
   transform: none;
-  box-shadow: none;
+  box-shadow: 2px 2px 5px var(--box-shadow);
   overflow: hidden;
 }
   }
