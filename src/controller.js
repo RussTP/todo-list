@@ -2,7 +2,6 @@
 import Project from "./project.js";
 import Todo from "./todo.js";
 import ProjectList from "./projectList.js";
-import Storage from "./storage.js";
 import { saveProjects, loadProjects } from "./storage.js";
 
 export default class Controller {
@@ -98,6 +97,7 @@ export default class Controller {
       todo.completed = !todo.completed;
     }
     this.display.displayProjects(this.projectList.projects);
+    saveProjects(this.projectList.projects)
   }
 
     toggleProjectComplete(projectId) {
@@ -111,6 +111,7 @@ export default class Controller {
     }
     this.display.displayProjects(this.projectList.projects);
     this.display.displayCompleteProjectNav(this.projectList.projects);
+    saveProjects(this.projectList.projects)
     
   }
 

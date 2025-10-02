@@ -400,8 +400,9 @@ input:focus, select:focus {
 
 .project-card {
     align-items: flex-start;
-    flex: 1 2 50rem;
+    flex: 1 2 80rem;
     min-width: 8rem;
+    width: 100%;
     height: auto;
     gap: 2em;
     padding: 2em;
