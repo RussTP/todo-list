@@ -388,13 +388,11 @@ displayCompleteProjectNav(projects) {
         item.dataset.projectId = project.id;
 
         item.addEventListener("click", () => {
-           console.log("Clicked project in sidenav:", project.id, project.title);
           this.controller.collapseTodo(project.id);
 
       
           const navBurger = document.querySelector("#nav-burger");
           if (navBurger && navBurger.classList.contains("open")) {
-             console.log("Closing mobile sidenav");
             navBurger.classList.remove("open");
           }
 
@@ -402,13 +400,10 @@ displayCompleteProjectNav(projects) {
           const projectCard = document.querySelector(
             `.project-card[data-project-id="${project.id}"]` 
           );
-          console.log("Found projectCard:", projectCard);
 
           if (projectCard) {
             const caret = projectCard.querySelector(".todo-caret");
             const todosContainer = projectCard.querySelector(".todos-container");
-
-                console.log("Caret:", caret, "Todos container:", todosContainer);
 
             if (caret && todosContainer) {
               if (todosContainer.classList.contains("show")) {

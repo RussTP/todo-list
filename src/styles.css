@@ -340,7 +340,8 @@ height: 100vh;
 
 input[type="submit"], #cancelBtn {
 background-color: var(--text-color);
-color: var(--nav-background) ;
+color: var(--nav-background);
+ font-family: "geo-regular-webfont", sans-serif;
 padding: 5px;
 cursor: pointer;
 border-radius: 5px;
@@ -670,5 +671,12 @@ input:focus, select:focus {
     border-radius: 5px;
 }
 
-    
+
+@media(hover:none) {
+.todo:hover {
+  transform: none;
+  box-shadow: none;
+  overflow: hidden;
+}
+  }
 }

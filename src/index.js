@@ -9,7 +9,6 @@ const controller = new Controller(display, projectList);
 display.controller = controller;
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
     display.displayProjects(projectList.projects);
     display.displayProjectNav(projectList.projects);
