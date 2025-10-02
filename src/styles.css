@@ -355,8 +355,9 @@ input {
   width: 13rem;
 }
 
-#description {
+#description, #edit-description {
   height: 6rem;
+  width: 13rem;
 }
 
 select {
