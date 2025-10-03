@@ -415,6 +415,7 @@ input:focus, select:focus {
 
 .todos-container {
     opacity: 0;
+    pointer-events: none; 
     max-height: 0;
     transition: opacity 0.5s ease, max-height 0.5s ease;
     
@@ -425,6 +426,7 @@ input:focus, select:focus {
     opacity: 1;
     max-height: 1000px;
     width: 100%;
+    pointer-events: auto;
     
 }
 
