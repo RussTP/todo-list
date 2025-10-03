@@ -228,6 +228,7 @@ addProject() {
           
           toggleBtn.addEventListener("click", (event) => {
           event.stopPropagation();
+           console.log("Toggle clicked for:", project.id, todo.id);
           this.controller.toggleComplete(project.id, todo.id);
       });
         todoBtnContainer.appendChild(toggleBtn);
