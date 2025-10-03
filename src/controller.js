@@ -79,7 +79,12 @@ export default class Controller {
     }
 
   collapseTodo(projectId) {
-  this.display.toggleExpanded(projectId);
+  if (this.display.expandedProjects.has(projectId)) {
+    this.display.expandedProjects.delete(projectId);
+  } else {
+  this.display.expandedProjects.add(projectId);
+    }
+  this.display.displayProjects(this.projectList.projects);
   }
 
   toggleComplete(projectId, todoId) {
@@ -96,7 +101,7 @@ export default class Controller {
     } else {
       todo.completed = !todo.completed;
     }
-    this.display.displayProjects(this.projectList.projects);
+    this.display.updateTodo(projectId, todo);
     saveProjects(this.projectList.projects)
   }
 

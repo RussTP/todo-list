@@ -112,6 +112,9 @@ addProject() {
       collapseTodoBtn.classList.add("collapse-btn");
       const caret = document.createElement("span");
       caret.classList.add("todo-caret");
+      if (this.expandedProjects.has(project.id)) {
+        caret.classList.add("is-open");
+      }
       collapseTodoBtn.appendChild(caret);
 
       collapseTodoBtn.addEventListener("click", () => {
@@ -136,6 +139,7 @@ addProject() {
       projectComplete.addEventListener("click", (event) => {
         event.stopPropagation(); 
       this.controller.toggleProjectComplete(project.id);
+      projectComplete.classList.toggle("is-complete");
       });
 
       buttonGroup.appendChild(projectComplete);
@@ -151,12 +155,14 @@ addProject() {
       todosContainer.classList.add("todos-container");
       if(this.expandedProjects.has(project.id)) {
         todosContainer.classList.add("show");
+        caret.classList.add("is-open");
       }
      
 
       project.todos.forEach(todo => {
         const todoEl = document.createElement("div");
         todoEl.classList.add("todo");
+        todoEl.dataset.todoId = todo.id;
 
         const priorityClass = priorityColors[todo.priority] || "priority-low";
            
@@ -220,7 +226,8 @@ addProject() {
         toggleBtn.classList.add("todo-toggle-btn");
          if(todo.completed)toggleBtn.classList.add("todo-is-complete");
           
-          toggleBtn.addEventListener("click", () => {
+          toggleBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
           this.controller.toggleComplete(project.id, todo.id);
       });
         todoBtnContainer.appendChild(toggleBtn);
@@ -312,7 +319,7 @@ displayProjectNav(projects) {
 
     projects.forEach(project => {
       const item = document.createElement("div");
-      item.classList.add("my-project"); // sidenav item
+      item.classList.add("my-project"); 
       item.textContent = project.title;
       item.dataset.projectId = project.id;
 
@@ -347,6 +354,23 @@ displayProjectNav(projects) {
   });
 }
 
+updateTodo(projectId, todo) {
+  const todoEl = document.querySelector(
+    `[data-project-id="${projectId}"] .todo[data-todo-id="${todo.id}"]`
+  );
+  if (!todoEl) return;
+    const spans = [
+    todoEl.querySelector(".todo-title"),
+    todoEl.querySelector(".todo-desc"),
+    todoEl.querySelector(".todo-date"),
+    ];
+    
+    spans.forEach(span => {
+      if (span) {
+        span.style.textDecoration = todo. completed ? "line-through" : "none";
+      }
+    });
+}
 
 
 projectNavToggle() {
