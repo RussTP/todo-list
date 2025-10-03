@@ -684,5 +684,13 @@ input:focus, select:focus {
   box-shadow: 2px 2px 5px var(--box-shadow);
   overflow: hidden;
 }
+button:hover {
+  background-color: none;
+}
+
+.project-card-btn button:hover {
+    background-color:none;
+}
+
   }
 }
